@@ -204,6 +204,20 @@
                                 </ul>
                             </li>
                             
+                             <li class="nav-item  ">
+                                <a href="#" class="nav-link nav-toggle">
+                                    <i class="icon-briefcase"></i>
+                                    <span class="title">Cms Management</span>
+                                    <span class="arrow"></span>
+                                </a>
+                                <ul class="sub-menu">
+                                    <li class="nav-item  ">
+                                        <a href="<?php echo $this->Url->build('/admin/CmsDetails/all_cms', true); ?>" class="nav-link ">
+                                            <span class="title">Cms Page List</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
                             
                             
                         </ul>
