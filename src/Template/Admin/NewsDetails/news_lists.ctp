@@ -27,6 +27,7 @@
                                                     <th class="min-phone-l">Description</th>
                                                     <th class="min-tablet">News Publish Date</th>
                                                     <th class="desktop">Celebrity Name</th>
+                                                    <th class="desktop">News Photos</th>
                                                     <th class="none">User Name</th>
                                                     <th class="none">User Email</th>
                                                 
@@ -57,12 +58,28 @@
                                                           foreach ($celebrity_val->news_celebrities as $val){
                                                               
                                                                
-                                                              echo $val->celebrity_detail->name;
+                                                              echo $val->celebrity_detail->name.',';
                                                           }
                                                         
                                                         
                                                         
                                                     } ?></td>
+                                                    
+                                                    
+                                                    <td><?php if(!empty( $celebrity_val->news_photos)){
+                                                      
+                                                          foreach ($celebrity_val->news_photos as $val){
+                                                              
+                        echo $this->Html->image("medium/".$val->image, ['alt' => 'event','class'=>'logo-default','height'=>'40px','width'=>'80px']);
+                                                            
+                                                            
+                                                          }
+                                                        
+                                                        
+                                                        
+                                                    } ?></td>
+                                                    
+                                                    
                                                     <td><?php echo $celebrity_val->user->fname;?></td>
                                                     <td><?php echo $celebrity_val->user->email;;?></td>
                                                     

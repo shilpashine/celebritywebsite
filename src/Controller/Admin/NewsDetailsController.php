@@ -165,6 +165,7 @@ $this->Flash->set('The data has been successfully inserted.');
 		
                          
                 )),
+                     'NewsPhotos'
 	    ),
 		
 	    'conditions'=>array(

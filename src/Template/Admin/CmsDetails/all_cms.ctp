@@ -263,8 +263,10 @@
           function delete_url11(el){
               var x = confirm("Are you sure you want to delete?");
                 if (x){
-                   
+                     var valu_coount=$("#div_url_count_new").val();
+                  var val_new=parseInt(valu_coount)-1;
                                       $("#id_url"+el).remove();
+                                      $("#div_url_count_new").val(val_new);
                               
 				}
 		   
@@ -275,8 +277,10 @@
             function delete_ur_vel(el){
               var x = confirm("Are you sure you want to delete?");
                 if (x){
-                   
+                  
                                       $("#id_url_cel"+el).remove();
+                                      
+                                      
                               
 				}
 		   
@@ -337,7 +341,7 @@
                    $.ajax({
 				type: "POST",
 				evalScripts: true,
-				url: '<?php echo $this->Url->build('/admin/eventDetails/delete_multiimage', true);  ?>',
+				url: '<?php echo $this->Url->build('/admin/CmsDetails/delete_multiimage', true);  ?>',
 				data: ({id:fgd}),
 				success: function (data){
                                     if(data==1){

@@ -187,6 +187,7 @@ $this->Flash->set('The data has been successfully inserted.');
 	    ),
 	    'conditions'=>array(
 		'NewsDetails.isdeleted' =>0,
+                   'NewsDetails.user_id' =>$userdata['id']
                 
 			
                 ),

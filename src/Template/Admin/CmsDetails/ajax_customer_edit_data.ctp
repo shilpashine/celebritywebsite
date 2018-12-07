@@ -9,15 +9,15 @@
                                     </div>
                                     
                                     
-                                   <?php  if(isset($data_all_event)){
-				$event_data=json_decode($data_all_event);
-                             //   pr($event_data);exit;
+                                   <?php  if(isset($data_all)){
+				$event_data=json_decode($data_all);
+                           //  pr($event_data);exit;
                                          ?>                                                       
                                                                             
 <!--                                    <div class="portlet-body">
                                          BEGIN FORM
                                         <form action="updateData" id="form_sample_2" method="post" enctype="multipart/form-data"> 
-                                           <input type="hidden" name="edit_user_id" value="<?php echo $event_data->id;?>"/>                  
+                                           <input type="hidden" name="ss" value="<?php echo $event_data->id;?>"/>                  
                                             <div class="form-body">
                                                 <div class="form-group form-md-line-input">
                                                     <input type="text" class="form-control" name="event_title" required="" id="form_control_1" placeholder="Enter your Name" value="<?php echo $event_data->event_title;?>">
@@ -399,11 +399,11 @@
                                     </div>-->
                                      <div class="portlet-body">
                                             <!-- BEGIN FORM-->
-                                            <form action="#" id="form_sample_2" method="post" enctype="multipart/form-data"> 
+                                            <form action="updateData" id="form_sample_2" method="post" enctype="multipart/form-data"> 
                                                 <input type="hidden" name="edit_user_id" value="<?php echo $event_data->id;?>"/>         
                                                 <div class="form-body">
                                                     <div class="form-group form-md-line-input">
-                                                        <input type="text" class="form-control" name="title11" required="" value="<?php echo $event_data->post_title;?>" id="form_control_1" placeholder="Enter your Name">
+                                                        <input type="text" class="form-control" name="title11" required="" value="<?php echo $event_data->page_title;?>" id="form_control_1" placeholder="Enter your Name">
                                                         <label for="form_control_1"> Page Title
                                                             <span class="required">*</span>
                                                         </label>
@@ -414,7 +414,7 @@
                                                      
 
                                                    <div class="form-group form-md-line-input">
-                                                        <textarea class="form-control" id="form_control_1" name="description" required=""><?php echo $event_data->post_description;?></textarea>
+                                                        <textarea class="form-control" id="form_control_1" name="description" required=""><?php echo $event_data->description;?></textarea>
 
                                                     </div>
 
@@ -436,7 +436,7 @@
                                                     </div>
                                                     
                                                      <div class="form-group form-md-line-input">
-                                                         <textarea class="form-control" name="meta_desc" required="" id="form_control_1"> <?php echo $event_data->meta_desc;?></textarea>
+                                                         <textarea class="form-control" name="meta_desc" required="" id="form_control_1"> <?php echo $event_data->meta_description;?></textarea>
                                                         <label for="form_control_1"> Meta Description
                                                             <span class="required">*</span>
                                                         </label>
@@ -455,7 +455,16 @@
                                                                     <span class="input-group-addon btn default btn-file">
 
 
-                                                                        <input type="file" name="image"> </span>
+                                                                        <input type="file" name="image"> 
+                                                                    <div id="image_id<?php echo $event_data->id;?>">
+                                                                    <div class="col-md-4">
+                                                                       <?php   if(!empty($val->image)){ ?>
+                                                                    <?php  echo $this->Html->image("medium/".$event_data->image, ['alt' => 'event','class'=>'logo-default','height'=>'40px','width'=>'80px']);?>
+                                                                       <?php } ?>
+                                                                    </div>
+                                                                    </div>
+                                                                    
+                                                                    </span>
                                                                        </div>
                                                             </div>
                                                         </div>
@@ -463,17 +472,26 @@
                                                        
 
                                                     <div class="form-group form-md-line-input">
-                                                        <input type="hidden" id="div_url_count_new" name="div_ticket_url_count" value="1"/>
+                                                        <input type="hidden" id="div_url_count_new" name="div_ticket_url_count" value="<?php echo count($event_data->cms_posts);?>"/>
+                                                         <?php   $i=0; if(!empty($event_data->cms_posts)){ foreach($event_data->cms_posts as $val){  ?>
+                                                         <div id="id_url<?php echo $val->id;?>">
                                                             <label> ADD Post </label>
-                                                            <input type="text" class="form-control" name="post_name[]" id="form_control_1"  placeholder=" Enter Post Name">
-                                                            <textarea class="form-control" name="post_desc[]"></textarea>
+                                                            <input type="text" class="form-control" name="post_name[]" id="form_control_1"  placeholder=" Enter Post Name" value=" <?php echo $val->post_title;?>">
+                                                            <textarea class="form-control" name="post_desc[]"> <?php echo $val->post_description;?></textarea>
                                                              
-                                                            <input type="file" class="form-control" name="post_image[]" id="form_control_1"/>
-                                                            <div id="url_ticket"></div>
-                                                        <button type="button" class="btn default" onclick="video_url1()">Add More Post</button>
+                                                            <input type="file" class="form-control" name="post_image[]" id="form_control_1" />
+                                                          <?php   if(!empty($val->image)){ ?>
+                                                              <?php  echo $this->Html->image("medium/".$val->image, ['alt' => 'event','class'=>'logo-default','height'=>'40px','width'=>'80px']);?>
+                                                                       
+                                                         <?php } ?>
+                                                        
+                                                   <input type="button" class="btn green" name="submit" value="Delete" onclick="delete_url11('<?php echo $val->id;?>')"/>
+                                                           
                                                     </div>
 
-
+                                                         <?php $i++;} }?>
+                                                        <div id="url_ticket"></div>
+                                                        <button type="button" class="btn default" onclick="video_url1()">Add More Post</button>
                                                 </div>
                                                 <div class="form-actions">
                                                     <div class="row">
