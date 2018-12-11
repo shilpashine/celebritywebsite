@@ -18,6 +18,7 @@ class UsersTable extends Table
 		$this->hasMany('Tasks');
                 $this->hasMany('OrganizerCelebrities');
                  $this->hasMany('NewsDetails');
+                 //$this->hasMany('EventOrganizers');
     }
     public function validationDefault(Validator $validator)
     {

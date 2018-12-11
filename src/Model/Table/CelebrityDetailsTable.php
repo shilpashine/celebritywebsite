@@ -15,6 +15,8 @@ $this->setTable('celebrity_details');
 		$this->hasMany('CelebrityCategories');
                 $this->hasMany('CelebrityPhotos');
                 $this->hasMany('CelebrityVideos');
+               $this->hasMany('EventCelebrities');
+                
                 
                 
     }

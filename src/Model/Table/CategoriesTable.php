@@ -10,6 +10,8 @@ class CategoriesTable extends Table
 		$this->hasMany('OrderItems');
 		$this->hasMany('ProductCategories');
 		$this->hasMany('HistoryProductCategories');
+                $this->hasMany('EventCategories',['foreignKey' => 'category_id']);
+                  $this->hasMany('CelebrityCategories',['foreignKey' => 'category_id']);
     }
 }
 ?>

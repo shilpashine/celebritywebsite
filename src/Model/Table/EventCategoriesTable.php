@@ -9,7 +9,7 @@ class EventCategoriesTable extends Table
 		
 	 $this->setTable('event_categories');	
         $this->belongsTo('EventDetails');
-		//$this->hasMany('CelebrityCategories');
+	$this->belongsTo('Categories');
                 
     }
     
