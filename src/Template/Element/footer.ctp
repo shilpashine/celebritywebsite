@@ -101,7 +101,10 @@
       
           echo $this->Html->script("popper/popper.js");
           echo $this->Html->script("bootstrap/js/bootstrap.min.js");
+            echo $this->Html->script("bootstrap-fileinput/bootstrap-fileinput.js");
           echo $this->Html->script("owl-carousel/owl.carousel.min.js");
+              echo $this->Html->script("owl-carousel/carousel.min.js");
+          
           echo $this->Html->script("jquery.countdown/jquery.countdown.min.js");
           echo $this->Html->script("wow/wow.min.js");
           echo $this->Html->script("isotope/isotope.pkgd.min.js");
@@ -110,8 +113,12 @@
           
           echo $this->Html->script("quilljs/js/quill.core.js");
           echo $this->Html->script("quilljs/js/quill.js");
+           echo $this->Html->script("jssor.slider-27.5.0.min.js");
            echo $this->Html->script("main.js");
+             
           ?>
+        	<script type="text/javascript">jssor_1_slider_init();</script>
+
     <script>
     	function validate(evt) {
 		  var theEvent = evt || window.event;

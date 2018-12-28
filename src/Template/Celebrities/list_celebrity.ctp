@@ -26,7 +26,7 @@
 								</select>
 							</div>
 						    <div class="input-group-append">
-						      <button class="btn btn-success srch" type="submit">Search</button>  
+						      <button class="btn srch" type="submit">Search</button>  
 						     </div>
 						  </div>
 					</div>
@@ -34,121 +34,46 @@
 			</div>
 			<div class="container">
                             
-                            <?php foreach($data_all as $val_category ){ ?>
+                            <?php $k=0;foreach($data_all as $val_category ){ ?>
 				<div class="row">
 					<div class="col-lg-12 main-content">
 						 <div class="shop-grid-fillter celeb-title clearfix">
 							<p><?php echo $val_category->category_name; ?></p></div>
 							 
 
-						<div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
+						<div id="carouselExampleIndicators<?php echo $k;?>" class="carousel slide" data-ride="carousel">
 						  <div class="carousel-inner flexslider">
-							 <div class="carousel-item slides active">
-								<div class="row">
+                                                         <div class="carousel-item slides active">
+								                      <div class="row">
                                                                      
                                                                       <?php foreach($val_category->celebrity_categories as $val_category ){ 
                                                                      if(!empty($val_category->celebrity_detail)){?>
 										<div class="col-md-3 celeb">
-											<a href="celebrity_details.html"> <?php   echo $this->Html->image("medium/".$val_category->celebrity_detail->celebrity_photos[0]->image, ['alt' => 'event']); ?></a>
+											<a href="../celebrities/celebrity_detail/<?php echo $val_category->celebrity_detail->id;?>"> <?php   echo $this->Html->image("medium/".$val_category->celebrity_detail->celebrity_photos[0]->image,array('height'=>'70px')); ?></a>
 											<div class="product-info">
-												<h3 class="product-title"><a href="celebrity_details.html"><?php echo $val_category->category_name; ?></a></h3>
+												<h3 class="product-title"><a href="celebrities/celebrity_detail/<?php echo $val_category->celebrity_detail->id;?>"><?php echo $val_category->category_name; ?></a></h3>
 												<p class="product-price"><?php echo $val_category->celebrity_detail->name; ?></p>
-												<p class="product-like"><a href="#"><i class="far fa-thumbs-up"></i> Like</a><span class="follow">Follow 29,210</span>
+												<p class="product-like"><span class="follow">Follow 29,210</span>
 												</p>
 												 
 											</div>
-										</div>
-                            <?php }} ?>
+										</div>  <?php }} ?>
+										
+
 									
 									</div>
 								</div>
-<!--								<div class="carousel-item slides">
-									<div class="row">
-										<div class="col-md-3 celeb">
-											<a href="celebrity_details.html"><img src="images/celebrity/5.jpg" alt=""></a>
-											<div class="product-info">
-												<h3 class="product-title"><a href="celebrity_details.html">Shahrukh khan</a></h3>
-												<p class="product-price">Bollywood</p>
-												<p class="product-like"><a href="#"><i class="far fa-thumbs-up"></i> Like</a><span class="follow">Follow 29,210</span>
-												</p>
-											</div>
-										</div>
-										<div class="col-md-3 celeb">
-											<a href="celebrity_details.html"><img src="images/celebrity/6.jpg" alt=""></a>
-											<div class="product-info">
-												<h3 class="product-title"><a href="celebrity_details.html">katrina kaif</a></h3>
-												<p class="product-price">Bollywood</p>
-												<p class="product-like"><a href="#"><i class="far fa-thumbs-up"></i> Like</a><span class="follow">Follow 29,210</span>
-												</p>
-											</div>
-										</div>
-										<div class="col-md-3 celeb">
-											<a href="celebrity_details.html"><img src="images/celebrity/7.jpg" alt=""></a>
-											<div class="product-info">
-												<h3 class="product-title"><a href="celebrity_details.html">Amir khan</a></h3>
-												<p class="product-price">Bollywood</p>
-												<p class="product-like"><a href="#"><i class="far fa-thumbs-up"></i> Like</a><span class="follow">Follow 29,210</span>
-												</p>
-											</div>
-										</div>
-										<div class="col-md-3 celeb">
-											<a href="celebrity_details.html"><img src="images/celebrity/8.jpg" alt=""></a>
-											<div class="product-info">
-												<h3 class="product-title"><a href="celebrity_details.html">Deepika padukone</a></h3>
-												<p class="product-price">Bollywood</p>
-												<p class="product-like"><a href="#"><i class="far fa-thumbs-up"></i> Like</a><span class="follow">Follow 29,210</span>
-												</p>
-											</div>
-										</div>
-							         </div>
-									</div>
-								<div class="carousel-item slides">
-									 <div class="row">
-										<div class="col-md-3 celeb">
-											<a href="celebrity_details.html"><img src="images/celebrity/9.jpg" alt=""></a>
-											<div class="product-info">
-												<h3 class="product-title"><a href="celebrity_details.html">priyanka chopra</a></h3>
-												<p class="product-price">Bollywood</p>
-												<p class="product-like"><a href="#"><i class="far fa-thumbs-up"></i> Like</a><span class="follow">Follow 29,210</span>
-												</p>
-											</div>
-										</div>
-										<div class="col-md-3 celeb">
-											<a href="celebrity_details.html"><img src="images/celebrity/10.jpg" alt=""></a>
-											<div class="product-info">
-												<h3 class="product-title"><a href="celebrity_details.html">Alia bhatt</a></h3>
-												<p class="product-price">Bollywood</p>
-												<p class="product-like"><a href="#"><i class="far fa-thumbs-up"></i> Like</a><span class="follow">Follow 29,210</span>
-												</p>
-											</div>
-										</div>	
-										<div class="col-md-3 celeb">
-											<a href="celebrity_details.html"><img src="images/celebrity/11.jpg" alt=""></a>
-											<div class="product-info">
-												<h3 class="product-title"><a href="celebrity_details.html">anushka sharma</a></h3>
-												<p class="product-price">Bollywood</p>
-												<p class="product-like"><a href="#"><i class="far fa-thumbs-up"></i> Like</a><span class="follow">Follow 29,210</span>
-												</p>
-											</div>
-										</div>	
-										<div class="col-md-3 celeb">
-											<a href="celebrity_details.html"><img src="images/celebrity/12.jpg" alt=""></a>
-											<div class="product-info">
-												<h3 class="product-title"><a href="celebrity_details.html">kumar sanu</a></h3>
-												<p class="product-price">Bollywood</p>
-												<p class="product-like"><a href="#"><i class="far fa-thumbs-up"></i> Like</a><span class="follow">Follow 29,210</span>
-												</p>
-											</div>
-										</div>
-							         </div>
-									</div>-->
+								
+
+								
+
 								  </div>
-								  <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev" >
-									<span class="carousel-control-prev-icon" aria-hidden="true"> <img src="images/left-arrow.png" alt="" class="arrow-left"> </span>
+								  <a class="carousel-control-prev" href="#carouselExampleIndicators<?php echo $k;?>" role="button" data-slide="prev" >
+									<span class="carousel-control-prev-icon" aria-hidden="true"> <img src="http://localhost/git_project/WebIdeasole/celebritycalling/webroot/images/left-arrow.png" alt="" class="arrow-left"> </span>
 									<span class="sr-only">Previous</span>
 								  </a>
-								  <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
-									<span class="carousel-control-next-icon" aria-hidden="true"> <img src="images/right-arrow.png" alt="" class="arrow-right"> </span>
+								  <a class="carousel-control-next" href="#carouselExampleIndicators<?php echo $k;?>" role="button" data-slide="next">
+									<span class="carousel-control-next-icon" aria-hidden="true"> <img src="http://localhost/git_project/WebIdeasole/celebritycalling/webroot/images/right-arrow.png" alt="" class="arrow-right"> </span>
 									<span class="sr-only">Next</span>
 								  </a>
 								</div>
@@ -160,7 +85,7 @@
 						</div> -->
 					</div>
                                     
-                            </div><?php } ?>
+                            </div><?php $k++;} ?>
 			
 <!--				<div class="row">
 					<div class="col-lg-12 main-content">
@@ -539,3 +464,4 @@
 
 			<!-- .container -->
 		</main><!-- .site-main -->
+               

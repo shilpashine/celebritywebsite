@@ -157,6 +157,7 @@
                                                     <th class="min-phone-l">Best_at</th>
                                                     <th class="min-tablet">Gender</th>
                                                     <th class="desktop">Dob</th>
+                                                    <th class="desktop">Category Name</th>
                                                     <th class="none">Home location</th>
                                                     <th class="none">Current location</th>
                                                      <th class="none">Description</th>
@@ -182,6 +183,7 @@
                                                     <td><?php echo $celebrity_val->best_at;?></td>
                                                     <td><?php if($celebrity_val->gendar=='1'){ echo 'Male'; ?> <?php }else{  echo 'Female';?>  <?php }?></td>
                                                     <td><?php echo $dob[0];?></td>
+                                                     <td><?php echo $celebrity_val->celebrity_categories[0]->category->category_name;?></td>
                                                     <td><?php echo $celebrity_val->home_location;?></td>
                                                     <td><?php echo $celebrity_val->current_location;?></td>
                                                     <td><?php echo $celebrity_val->description;?></td>
@@ -194,6 +196,11 @@
                                                        <a href="deleteData/<?php echo $celebrity_val->id;?> ">
                                                             <i class="fa fa-trash"></i> Delete </a>
                                                      <br/>
+                                                     
+                                                      <a href="view_celebrity/<?php echo $celebrity_val->id;?> ">
+                                                            <i class="fa fa-eye"></i> View Details </a>
+                                                            <br/> 
+                                                            
                                                      <?php if($celebrity_val->status=='1'){ ?>
                                                         <a href="change_status/<?php echo $celebrity_val->id;?> ">
                                                             <i class="fa fa-check" style="color:green"></i> Status </a>

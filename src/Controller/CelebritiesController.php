@@ -11,7 +11,7 @@ class CelebritiesController extends AppController {
 		parent::beforeFilter($event);
 	 
 	   
-			 $this->Auth->allow(['login','logout','listCelebrity','replaceTab','swapTab']);
+			 $this->Auth->allow(['login','logout','listCelebrity','replaceTab','swapTab','celebrityDetail']);
 
 	    
     }
@@ -25,6 +25,7 @@ class CelebritiesController extends AppController {
                    $this->loadModel('CelebrityPhotos');
                     $this->loadModel('CelebrityCategories');
 		$this->loadModel('OrganizerCelebrities');
+                $this->loadModel('EventCelebrities');
                     
         $this->loadComponent('RequestHandler');
     } 
@@ -77,7 +78,84 @@ class CelebritiesController extends AppController {
 		}
     }
                 
-        
+     
+    
+    
+      public function celebrityDetail($id=NULL){
+       
+         
+          $date1=date('Y-m-d');
+        $this->viewBuilder()->setLayout('default');
+          $data_all11=$this->CelebrityDetails->get($id, array(
+         'recursive' => -1,
+		
+              'contain' => array(
+                    'CelebrityPhotos','CelebrityVideos'
+                             ),
+                         'conditions'=>array(
+		'CelebrityDetails.isdeleted' =>0,
+                'CelebrityDetails.status' =>1,
+                'CelebrityDetails.id ' => $id
+              
+				
+                ),
+                         
+         
+                'order' => array(
+                'CelebrityDetails.id' => 'DESC'
+                )
+        ));
+          
+          $data_all11 = $data_all11->toArray();
+      //   pr($data_event);exit;
+                if(!empty($data_all11)){
+		$this->set('data_all',json_encode($data_all11));
+              
+		}
+                
+                
+           $data_event=$this->EventCelebrities->find('all', array(
+         'recursive' => -1,
+		
+              'contain' => array(
+                    'CelebrityDetails'=>array( 'CelebrityPhotos'),'EventDetails'=>array(
+                        
+                       'conditions'=>array(
+		'EventDetails.isdeleted' =>0,
+               
+                'EventDetails.status ' => 1
+              
+				
+                ),  
+                    )
+                             ),
+                'conditions'=>array(
+		'EventCelebrities.isdeleted' =>0,
+               
+                'EventCelebrities.celebrity_id ' => $id
+              
+				
+                ),
+                         
+         
+                'order' => array(
+                'EventCelebrities.id' => 'DESC'
+                )
+        ));
+           
+           
+           
+        // pr($data_all11);exit;
+		$data_event = $data_event->toArray();
+      //   pr($data_event);exit;
+                if(!empty($data_all)){
+		$this->set('data_event',json_encode($data_event));
+              
+		}
+    }
+    
+    
+    
       }      
 	 
 

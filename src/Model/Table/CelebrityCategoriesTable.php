@@ -9,6 +9,7 @@ class CelebrityCategoriesTable extends Table
 		
 	 $this->setTable('celebrity_categories');	
         $this->belongsTo('CelebrityDetails');
+         $this->belongsTo('Categories');
 		//$this->hasMany('CelebrityCategories');
                 
     }

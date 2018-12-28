@@ -1,6 +1,6 @@
 <?php
 $this->layout = 'default';
-?>  <div  class="campaign-content grid"  style="height:auto !important;"> <div class="row" ><?php  foreach($data_all_event as $valnw){ //pr($valnw);exit; 
+?>  <div  class="campaign-content grid"  style="height:auto !important;"> <div class="row" ><?php if(!empty($data_all_event)){ foreach($data_all_event as $valnw){ //pr($valnw);exit; 
 if(!empty($valnw->event_organizers)) {?>
 							<div class="col-lg-4 col-md-6 col-sm-6 col-6 filterinteresting filterpopular filterlatest">
 								<div class="campaign-item">
@@ -34,6 +34,6 @@ if(!empty($valnw->event_organizers)) {?>
 								</div>
 							</div>
                                                     
-                                                            <?php }} ?></div></div>
+<?php }}} ?></div></div>
                         
                         <?php exit;?>

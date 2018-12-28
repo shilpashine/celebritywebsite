@@ -51,7 +51,11 @@ class CelebritiesController extends AppController {
          $user_datas=$this->OrganizerCelebrities->find('all', array(
          'recursive' => -1,
 		 'contain' => array(
-                     'CelebrityDetails'
+                     'CelebrityDetails'=>array('conditions'=>array(
+				'CelebrityDetails.isdeleted' =>0,
+                'CelebrityDetails.status' =>1
+				
+                ))
 	    ),
 	    'conditions'=>array(
 				'OrganizerCelebrities.isdeleted' =>0,

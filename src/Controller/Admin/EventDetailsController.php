@@ -43,6 +43,7 @@ class EventDetailsController extends AppController {
               $this->loadModel('EventCategories');
                 $this->loadModel('EventPhotos');
                   $this->loadModel('EventVideos');
+                    $this->loadModel('EventTicketCodeDetails');
              
                   
                       
@@ -50,7 +51,100 @@ class EventDetailsController extends AppController {
               
         $this->loadComponent('RequestHandler');
     } 
-	
+	  public function viewDetails($id=NULL){
+	   // $id=$this->request->data['id'];
+            
+              $data_all=$this->Categories->find('all', array(
+         'recursive' => -1,
+		'fields'=>array('id','category_name'),
+	    'conditions'=>array(
+		'Categories.is_deleted' =>0,
+                'Categories.status' =>1
+				
+                ),
+                'order' => array(
+                'Categories.id' => 'DESC'
+                )
+        ));
+		$data_all = $data_all->toArray();
+             
+                if(!empty($data_all)){
+		$this->set('data_all',json_encode($data_all));
+              
+		}
+         
+                
+            $data_all_event=$this->EventDetails->get($id, array(
+         'recursive' => -1,
+	'contain' => array(
+            'EventCategories','EventCelebrities','EventOrganizers','EventPhotos','EventVideos','EventTicketDetails'
+	    ),
+	    'conditions'=>array(
+                'EventDetails.isdeleted' =>0,
+                'EventDetails.id' =>$id
+            ),
+        'order' => array(
+             'EventDetails.id' => 'DESC'
+            )
+        ));     
+                
+                
+           
+		$data_all_event = $data_all_event->toArray();
+          //  pr($data_all_event);exit;
+                if(!empty($data_all_event)){
+		$this->set('data_all_event',json_encode($data_all_event));
+              
+		}    
+                
+               
+                
+                
+                
+          $user_datas11=$this->Users->find('all', array(
+         'recursive' => -1,
+		 'contain' => array(
+	    ),
+	    'conditions'=>array(
+				'Users.is_deleted' =>0,
+                 'Users.status' =>1,
+				'Users.user_type' =>4
+                ),
+                'order' => array(
+                'Users.id' => 'DESC'
+                )
+        ));
+		$user_datas11 = $user_datas11->toArray();
+                
+		//pr($user_datas);exit;
+		if(!empty($user_datas11)){
+		$this->set('celebrity_datas12',json_encode($user_datas11));
+		}
+         
+                 
+         $cel_datas=$this->CelebrityDetails->find('all', array(
+         'recursive' => -1,
+		 'contain' => array(
+                     
+	    ),
+	    'conditions'=>array(
+				'CelebrityDetails.isdeleted' =>0,
+				'CelebrityDetails.status' =>1
+                ),
+                'order' => array(
+                'CelebrityDetails.id' => 'DESC'
+                )
+        ));
+		$cel_datas = $cel_datas->toArray();
+                
+		//pr($user_datas);exit;
+		if(!empty($cel_datas)){
+		$this->set('cel_datas',json_encode($cel_datas));
+		}
+                
+                
+                
+    }
     public function listCelebrityAdd(){
       $this->autoRender = false;
 
@@ -346,6 +440,16 @@ $this->Flash->set('The data has been successfully inserted.');
                       $ticket1 = $catsTable11->newEntity();
                       $ticket1->event_detail_id=$insertedId;
                       $ticket1->ticket_name=$this->request->data["ticket_name"][$n];
+                        $ticket1->ticket_color=$this->request->data["ticket_color"][$n];
+                        $event_code=$insertedId.time();
+                        $s_count=0; $s_count1=1;
+                         $sq=sprintf('%04u', $s_count1);
+                         $s_count_last=$sq+$this->request->data["ticket_qty"][$n];
+                          $sq_last=sprintf('%04u', $s_count_last);
+                      $ticket1->ticket_start_code=$event_code.'-'.$sq;
+                      $ticket1->ticket_end_code=$event_code.'-'.$sq_last;
+                      $ticket1->ticket_avl=$this->request->data["ticket_qty"][$n];
+                      
                       $ticket1->ticket_desc=$this->request->data["ticket_desc"][$n];
                       $ticket1->ticket_qty=$this->request->data["ticket_qty"][$n];
                       $ticket1->ticket_price=$this->request->data["ticket_price"][$n];      
@@ -353,8 +457,24 @@ $this->Flash->set('The data has been successfully inserted.');
                         $ticket1->created=date("Y-m-d");
                         $ticket1->modified=date("Y-m-d");
                        // pr($ticket);exit;
-                    $this->EventTicketDetails->save($ticket1);
-                        
+                    $ticket_del=$this->EventTicketDetails->save($ticket1);
+                       //   $insertedcodeId = $ticket_del->id;
+                          
+                     //     $event_code='Event-'.time();
+//                          for($s=0;$s<($this->request->data["ticket_qty"]);$s++){
+//                          
+//                              $codeTable11 = TableRegistry::get('EventTicketCodeDetails');
+//                      $codeTable112 = $codeTable11->newEntity();
+//                      $codeTable112->event_ticket_detail_id=$insertedcodeId;  
+//                              $sq=sprintf('%04u', $s);
+//                      $codeTable112->ticket_code=$event_code.'-'.$sq;
+//                      $codeTable112->event_detail_id=$insertedId;
+//                      $this->EventTicketCodeDetails->save($codeTable112);
+//
+//                      
+//                      
+//                          }
+                          
                          }
                          }
                          
@@ -742,8 +862,39 @@ $usersTable->save($article);
                       $ticket1 = $catsTable11->newEntity();
                       $ticket1->event_detail_id=$insertedId;
                       $ticket1->ticket_name=$this->request->data["ticket_name"][$n];
+                      $ticket1->ticket_color=$this->request->data["ticket_color"][$n];
+                      
+                      
+                      $qty=$this->request->data["ticket_qty"][$n];
+                      
+                      if(!empty($this->request->data["ticket_avl"][$n])){
+                        $avl=$this->request->data["ticket_avl"][$n];
+                      }
+                      $avl=$qty;
+                      if(!empty($this->request->data["add_ticket"][$n])){
+                           $qty=$qty+$this->request->data["add_ticket"][$n];
+                           $avl=$avl+$this->request->data["add_ticket"][$n];
+                      }
+                      if(!empty($this->request->data["less_ticket"][$n])){
+                             $qty=$qty-$this->request->data["less_ticket"][$n];
+                            $avl=$avl-$this->request->data["less_ticket"][$n];
+                      }
+                      
+                      
                       $ticket1->ticket_desc=$this->request->data["ticket_desc"][$n];
-                      $ticket1->ticket_qty=$this->request->data["ticket_qty"][$n];
+                       $ticket1->ticket_qty=$qty;
+                       $ticket1->ticket_avl=$avl;
+                       
+                       
+                      $event_code=$insertedId.time();
+                        $s_count=0; $s_count1=1;
+                         $sq=sprintf('%04u', $s_count1);
+                         $s_count_last=$sq+$qty;
+                          $sq_last=sprintf('%04u', $s_count_last);
+                      $ticket1->ticket_start_code=$event_code.'-'.$sq;
+                      $ticket1->ticket_end_code=$event_code.'-'.$sq_last;
+                      
+                      
                       $ticket1->ticket_price=$this->request->data["ticket_price"][$n];      
                       // pr($this->request->data["ticket_name"]);exit;
                         $ticket1->created=date("Y-m-d");

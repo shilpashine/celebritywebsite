@@ -6,16 +6,9 @@ class UsersTable extends Table
 {
     public function initialize(array $config)
     {
-		$this->hasMany('PaymentDetails');
-		$this->hasMany('PaymentHistories');
-		$this->hasMany('Orders');
-		$this->hasMany('MessageReplies');
-		$this->hasMany('Products');
-		$this->hasMany('HistoryProducts');
-		$this->hasMany('Carts');
+		
 		$this->hasMany('OrderProducts');
-		$this->hasMany('Policies');
-		$this->hasMany('Tasks');
+		
                 $this->hasMany('OrganizerCelebrities');
                  $this->hasMany('NewsDetails');
                  //$this->hasMany('EventOrganizers');

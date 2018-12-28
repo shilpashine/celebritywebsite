@@ -34,7 +34,7 @@ $this->layout = 'default';
 					<div class="description">Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore.</div>
                                       
 					<div class="col-md-8 mx-auto photo-tabs">
-						<ul class="nav nav-pills mb-3 nav-justified" id="pills-tab" role="tablist">
+						<ul class="nav nav-pills mb-3 nav-justified red" id="pills-tab" role="tablist">
                                                     <?php 
                                                         if(isset($data_all)){
 							$i=0;
@@ -89,20 +89,20 @@ $this->layout = 'default';
                                          <?php $m++; } ?> <h4>290+ Events</h4>
 													</div>
                                                                                         <p><?php if(!empty($val->event_detail->event_description)){ echo $val->event_detail->event_description ; }?></p>
-                                                                                        <a href="event_details.html" class="btn-primary">Event Description</a>
+                                                                                        <a href=#" class="btn-primary">Event Description</a>
 										</div>
 										</div>
 										<div class="col-md-8 pls-col">
 												<div>
 														<div class="project-love-item clearfix">
-															<a class="project-love-image" href="event_details.html"> <?php if(!empty($val->event_detail->event_photos[0]->image)){ echo $this->Html->image("medium/".$val->event_detail->event_photos[0]->image, ['alt' => 'event']); }?>
+															<a class="project-love-image" href="eventDetails/event_detail/<?php echo $val->event_detail->id;?>"> <?php if(!empty($val->event_detail->event_photos[0]->image)){ echo $this->Html->image("medium/".$val->event_detail->event_photos[0]->image, ['alt' => 'event']); }?>
 </a>
 															<div class="project-love-item-content project-love-box">
                                                                                                                                 <a href="#" class="category"><?php if(!empty($category_datas->category_name)){ echo $category_datas->category_name; }?></a>
                                                                                                                                 <?php if(!empty($val->event_detail->event_celebrities)){ foreach($val->event_detail->event_celebrities as $cat_details){ ?><p> <?php if(!empty($cat_details->celebrity_details[0]->name)){ echo $cat_details->celebrity_details[0]->name; }?></p>
-																<h3><a href="event_details.html">The Best <?php if(!empty($cat_details->celebrity_details[0]->best_at)){ echo $cat_details->celebrity_details[0]->best_at; }?></a></h3>
-																<div class="project-love-description"><?php if(!empty($cat_details->celebrity_details->description)){ echo $cat_details->celebrity_details->description; }?></div>
-                                                                                                                                <?php }} ?>
+																<h3><a href="#">The Best <?php if(!empty($cat_details->celebrity_details[0]->best_at)){ echo substr($cat_details->celebrity_details[0]->best_at, 0, 30); }?></a></h3>
+																<div class="project-love-description"><?php if(!empty($cat_details->celebrity_details->description)){ echo substr($cat_details->celebrity_details->description, 0, 30); }?></div>
+                                                                                                                                 <?php }} ?>
                                                                                                                                 <div class="project-love-author">
                                                                                                                                     <?php  if(!empty($val->event_detail->event_organizers)){
                                                                                                                                         foreach($val->event_detail->event_organizers as $event_tool){
@@ -117,7 +117,7 @@ $this->layout = 'default';
 																<div class="process">
 																	<div class="raised"><span></span></div>
 																	<div class="process-info">
-																		<div class="process-pledged"><i class="fa fa-inr" aria-hidden="true"></i> <?php if(!empty( $val->event_detail->event_amount)) { echo $val->event_detail->event_amount ; }?></span>pledged</div>
+																		<div class="process-pledged"><span><i class="fa fa-inr" aria-hidden="true"></i> <?php if(!empty( $val->event_detail->event_amount)) { echo $val->event_detail->event_amount ; }?></span>pledged</div>
 																		<div class="process-funded"><span><?php if(!empty( $val->event_detail->event_amount)&& !empty( $val->event_detail->target_amount) ) {  $new_amount=($val->event_detail->target_amount/$val->event_detail->event_amount)*100 ; echo round($new_amount);}?>%</span>funded</div>
 																		<div class="process-time"><span>37</span>backers</div>
 																		 <?php if(!empty($val->event_detail->approx_start_date)){
@@ -209,10 +209,11 @@ $this->layout = 'default';
                                              <div  class="campaign-content grid"  style="height:auto !important;">
                                             <div class="row" >
                                                     
-                                                 <?php  foreach($data_all_event as $valnw){ //pr($valnw);exit; ?>
+                                                 <?php  if(!empty($data_all_event)){
+                                                     foreach($data_all_event as $valnw){ //pr($valnw);exit; ?>
 							<div class="col-lg-4 col-md-6 col-sm-6 col-6 filterinteresting filterpopular filterlatest">
 								<div class="campaign-item">
-									<a class="overlay" href="event_details.html">
+									<a class="overlay" href="eventDetails/event_detail/<?php echo $valnw->id;?>">
 										<?php if(!empty($valnw->event_photos[0]->image)){ echo $this->Html->image("medium/".$valnw->event_photos[0]->image, ['alt' => 'event']); }?>
 										<span class="ion-ios-search-strong"></span>
 									</a>
@@ -220,7 +221,7 @@ $this->layout = 'default';
                                                                            
                                                                             <a href="#" class="category"> <?php foreach($valnw->event_categories as $val){  ?><?php echo $val->category->category_name;?> , <?php } ?></a>
                                                                           
-										<h3><a href="event_details.html"><?php echo $valnw->event_title;?></a></h3>
+										<h3><a href="eventDetails/event_detail/<?php echo $valnw->id;?>"><?php echo $valnw->event_title;?></a></h3>
 										<div class="campaign-description"><?php echo $valnw->event_description;?></div>
                                                                                 <div class="campaign-author"><a class="author-icon" href="#"><?php if(!empty($valnw->event_organizers)) { foreach($valnw->event_organizers as $new1){ ?><?php echo $this->Html->image("medium/".$new1->users[0]->image, ['alt' => 'event']); ?></a>by <a class="author-name" href="#"><?php echo $new1->users[0]->fname.' '. $new1->users[0]->lname;?>, <?php }} ?></a></div>
 										<div class="process">
@@ -242,7 +243,7 @@ $this->layout = 'default';
 								</div>
 							</div>
                                                     
-                                                 <?php } ?>
+                                                 <?php }} ?>
 
                                             </div></div>
 					</div>
@@ -309,13 +310,18 @@ $this->layout = 'default';
 			<div class="partners">
 				<div class="container">
 					<div class="partners-slider owl-carousel">
-						<div><a href="celebrity_details.html"><img src="images/celibrity1.png" alt=""></a></div>
-						<div><a href="celebrity_details.html"><img src="images/celibrity2.png" alt=""></a></div>
-						<div><a href="celebrity_details.html"><img src="images/celibrity3.png" alt=""></a></div>
-						<div><a href="celebrity_details.html"><img src="images/celibrity4.png" alt=""></a></div>
-						<div><a href="celebrity_details.html"><img src="images/celibrity5.png" alt=""></a></div>
-						<div><a href="celebrity_details.html"><img src="images/celibrity7.png" alt=""></a></div>
-						<div><a href="celebrity_details.html"><img src="images/celibrity8.png" alt=""></a></div>
+                                            
+                                            <?php 
+                                            if(isset($staff_data)){
+				$event_data=json_decode($staff_data);
+                                            }
+                                            foreach($event_data as $val ){  //pr($val->celebrity_photos[0]->image);exit;?>
+                                            
+                                            <div><a href="celebrities/list-celebrity"><?php if(!empty($val->celebrity_photos[0]->image)){ ?> <img src="img/medium/<?php echo $val->celebrity_photos[0]->image;?>" class="img-circle" style="height:70px; "/>
+<?php } ?></a></div>
+					
+						
+                                            <?php } ?>	
 					</div>
 				</div>
 			</div><!-- .partners -->
@@ -364,5 +370,4 @@ $this->layout = 'default';
                     
                     
                     </script>
-                    
-              
+                        

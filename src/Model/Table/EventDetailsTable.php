@@ -16,7 +16,13 @@ $this->setTable('event_details');
                    $this->hasMany('EventOrganizers');
                       $this->hasMany('EventTicketDetails');
                 
-                
+                   $this->hasMany('EventOrders',[
+       'className'=>'EventOrders',
+            'foreignKey' =>'event_id',
+             'bindingKey'=> 'id',
+//            conditions => array('EventOrgnizersTable.organizer_id' => 'Users.id')
+      
+]);
     }
     
 }

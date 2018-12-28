@@ -272,7 +272,7 @@
                                                         </label>
                                                         <div class="form-group form-md-line-input">
                                                            <?php  //pr($celebrity_datas);exit; ?>
-                                                            <select class="form-control" name="event_org_id[]" multiple required="" >
+                                                            <select class="form-control" name="event_org_id[]" multiple >
 
                                                            <?php      if(isset($celebrity_datas12)){
 
@@ -322,7 +322,8 @@
                                                             <label> ADD Ticket Type </label>
                                                             <input type="text" class="form-control" name="ticket_name[]" id="form_control_1"  placeholder=" Enter Ticket Name">
                                                              <input type="text" class="form-control" name="ticket_desc[]" id="form_control_1"  placeholder=" Enter Ticket Description">
-                                                               <input type="text" class="form-control" name="ticket_qty[]" id="form_control_1"  placeholder=" Enter Ticket Qty">
+                                                             <input type="text" class="form-control" name="ticket_color[]" id="form_control_1"  placeholder=" Enter Ticket Color"> 
+                                                             <input type="text" class="form-control" name="ticket_qty[]" id="form_control_1"  placeholder=" Enter Ticket Qty">
                                                                   <input type="text" class="form-control" name="ticket_price[]" id="form_control_1"  placeholder=" Enter Ticket Price">
                                                             <div id="url_ticket"></div>
                                                         <button type="button" class="btn default" onclick="video_url()">Add More Ticket Type</button>
@@ -409,6 +410,8 @@
                                                          
                                                          
                                                    <?php  } ?>
+                                                      <a href="viewDetails/<?php echo $celebrity_val->id;?> ">
+                                                            <i class="fa fa-eye"></i> View Details </a>
                                                   
                                                  </td>
                                                 </tr>
@@ -530,7 +533,7 @@
                                                 
                                                     <div class="form-group form-md-line-input">
                                                         <input type="hidden" id="div_url_count" value="1"/>
-                                                        <input type="text" class="form-control" name="video_url[]"   placeholder=" Enter Video Url">
+                                                        <input type="text" class="form-control" id="video1" name="video_url[]"   placeholder=" Enter Video Url">
                                                         <div id="url_cel"></div>
                                                     <button type="button" class="btn default" onclick="celebrity_video_url()">Add More Url</button>
                                                 </div>
@@ -538,12 +541,12 @@
                                                 <div class="row">
                                                     <div class="col-md-12">
                                                       
-                                                        <button type="button" class="btn default" onclick="save_celebrity()">submit</button>
+                                                       
                                                     </div>
                                                 </div>
                                             </div>
                                             </div>
-                                            
+                                             <button type="button" class="btn default" onclick="save_celebrity()">submit</button>
                                         </form>
         </div>
         <div class="modal-footer">
@@ -561,8 +564,9 @@
                     
                     
                     function save_celebrity(){
+//                        alert('hii')
 	var name=$('#name').val();
-	
+	//alert(name)
   if(name=='' || name==null){
 		$("#error_edit_fname").html("Please Enter Celebrity Name");
 		$("#name").focus();
@@ -570,9 +574,16 @@
 	else{
         
       
+          $("#form_sampl_cel").submit();
           
+//          $(document).on('submit','#form_sampl_cel',function(){
+//              
+//          });
 	   //document.getElementById("form_sampl_cel").submit();
-           $("#form_sampl_cel").submit();
+//           $("#form_sampl_cel").on('submit',function(){
+//               alert('success');
+//           });
+           
 
 	  
         }
@@ -594,7 +605,7 @@
                   var div_url_count=$("#div_ticket_url_count").val();
                   var div_new_count=parseInt(div_url_count)+1;
                   $("#div_ticket_url_count").val(div_new_count);
-                   $("#url_ticket").append('<div id="id_url'+div_new_count+'">   <label> ADD Ticket Type </label><input type="text" class="form-control" name="ticket_name[]" id="form_control_1"  placeholder=" Enter Ticket Name">  <input type="text" class="form-control" name="ticket_desc[]" id="form_control_1"  placeholder=" Enter Ticket Description"><input type="text" class="form-control" name="ticket_qty[]" id="form_control_1"  placeholder=" Enter Ticket Qty"> <input type="text" class="form-control" name="ticket_price[]" id="form_control_1"  placeholder=" Enter Ticket Price"> <input type="button" class="btn green" name="submit" value="Delete" onclick="delete_url11('+div_new_count+')"/> </div>')
+                   $("#url_ticket").append('<div id="id_url'+div_new_count+'">   <label> ADD Ticket Type </label><input type="text" class="form-control" name="ticket_name[]" id="form_control_1"  placeholder=" Enter Ticket Name"><input type="text" class="form-control" name="ticket_color[]" id="form_control_1"  value="" placeholder=" Enter Ticket Color"><input type="text" class="form-control" name="ticket_desc[]" id="form_control_1"  placeholder=" Enter Ticket Description"><input type="text" class="form-control" name="ticket_qty[]" id="form_control_1"  placeholder=" Enter Ticket Qty"> <input type="text" class="form-control" name="ticket_price[]" id="form_control_1"  placeholder=" Enter Ticket Price"> <input type="button" class="btn green" name="submit" value="Delete" onclick="delete_url11('+div_new_count+')"/> </div>')
                     
                     
 		
@@ -735,7 +746,7 @@
                   var div_url_count=$("#div_url_count").val();
                   var div_new_count=parseInt(div_url_count)+1;
                   $("#div_url_count").val(div_new_count);
-                   $("#url_cel").append('<div id="id_url_cel'+div_new_count+'"><input type="text" class="form-control" name="video_url[]" value="" /> <input type="button" class="btn green" name="submit" value="Delete" onclick="delete_ur_vel('+div_new_count+')"/> </div>');
+                   $("#url_cel").append('<div id="id_url_cel'+div_new_count+'"><input type="text" id="video'+div_new_count+'" class="form-control" name="video_url[]" /> <input type="button" class="btn green" name="submit" value="Delete" onclick="delete_ur_vel('+div_new_count+')"/> </div>');
                     
                     
 		

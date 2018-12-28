@@ -32,7 +32,7 @@ $this->layout = 'default';
                                          <?php $m++; } ?> <h4>290+ Events</h4>
 													</div>
                                                                                         <p><?php if(!empty($val->event_detail->event_description)){ echo substr($val->event_detail->event_description,0,150) ; }?>..</p>
-                                                                                        <a href="event_details.html" class="btn-primary">Event Description</a>
+                                                                                        <a href="#" class="btn-primary">Event Description</a>
 										</div>
 										</div>
 										<div class="col-md-8 pls-col">
@@ -43,9 +43,9 @@ $this->layout = 'default';
 															<div class="project-love-item-content project-love-box">
                                                                                                                                 <a href="#" class="category"><?php if(!empty($category_datas->category_name)){ echo $category_datas->category_name; }?></a>
                                                                                                                                 <?php if(!empty($val->event_detail->event_celebrities)){ foreach($val->event_detail->event_celebrities as $cat_details){ ?><p> <?php if(!empty($cat_details->celebrity_details[0]->name)){ echo $cat_details->celebrity_details[0]->name; }?></p>
-																<h3><a href="event_details.html">The Best <?php if(!empty($cat_details->celebrity_details[0]->best_at)){ echo $cat_details->celebrity_details[0]->best_at; }?></a></h3>
-																<div class="project-love-description"><?php if(!empty($cat_details->celebrity_details->description)){ echo substr($cat_details->celebrity_details->description,0,150); }?>..</div>
-                                                                                                                                <?php }} ?>
+																<h3><a href="#">The Best <?php if(!empty($cat_details->celebrity_details[0]->best_at)){ echo substr($cat_details->celebrity_details[0]->best_at, 0, 100); }?></a></h3>
+																<div class="project-love-description"><?php if(!empty($cat_details->celebrity_details->description)){ echo substr($cat_details->celebrity_details->description, 0, 100); }?></div>
+                                                                                                                               <?php }} ?>
                                                                                                                                 <div class="project-love-author">
                                                                                                                                     <?php  if(!empty($val->event_detail->event_organizers)){
                                                                                                                                         foreach($val->event_detail->event_organizers as $event_tool){
@@ -60,7 +60,7 @@ $this->layout = 'default';
 																<div class="process">
 																	<div class="raised"><span></span></div>
 																	<div class="process-info">
-																		<div class="process-pledged"><i class="fa fa-inr" aria-hidden="true"></i> <?php if(!empty( $val->event_detail->event_amount)) { echo $val->event_detail->event_amount ; }?></span>pledged</div>
+																		<div class="process-pledged"><span><i class="fa fa-inr" aria-hidden="true"></i> <?php if(!empty( $val->event_detail->event_amount)) { echo $val->event_detail->event_amount ; }?></span>pledged</div>
 																		<div class="process-funded"><span><?php if(!empty( $val->event_detail->event_amount)&& !empty( $val->event_detail->target_amount) ) {  $new_amount=($val->event_detail->target_amount/$val->event_detail->event_amount)*100 ; echo round($new_amount);}?>%</span>funded</div>
 																		<div class="process-time"><span>37</span>backers</div>
                                                                                                                                                 <?php if(!empty($val->event_detail->approx_start_date)){

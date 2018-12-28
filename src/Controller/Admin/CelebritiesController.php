@@ -36,7 +36,52 @@ class CelebritiesController extends AppController {
         $this->loadComponent('RequestHandler');
     } 
 	
-    
+     public function viewCelebrity($id=NULL){
+        $userdata=$this->Auth->User();	
+        if(!empty($userdata)){		
+         $this->viewBuilder()->setLayout('default_datatable');
+         
+         //   $id=$this->request->data['id'];
+            
+            $data_all=$this->Categories->find('all', array(
+         'recursive' => -1,
+		'fields'=>array('id','category_name'),
+	    'conditions'=>array(
+				'Categories.is_deleted' =>0,
+				
+                ),
+                'order' => array(
+                'Categories.id' => 'DESC'
+                )
+        ));
+		$data_all = $data_all->toArray();
+             
+                if(!empty($data_all)){
+		$this->set('data_all',json_encode($data_all));
+              
+		}
+                
+                
+		 //echo $id;exit;
+	 $datas=$this->CelebrityDetails->get($id, array(
+         'recursive' => -1,
+	 'contain' => array(
+             'CelebrityCategories','CelebrityPhotos','CelebrityVideos'
+	    ),
+	    'conditions'=>array(
+                'CelebrityDetails.isdeleted' =>0
+            ),
+        'order' => array(
+            )
+        ));
+		$staff_data = $datas->toArray();
+               // print_r($staff_data);exit;
+		$this->set('staff_data',json_encode($staff_data));
+                
+                
+        }    
+        
+      }      
     
     public function listCelebrity(){
         $userdata=$this->Auth->User();	
@@ -67,7 +112,7 @@ class CelebritiesController extends AppController {
          $user_datas=$this->CelebrityDetails->find('all', array(
          'recursive' => -1,
 		 'contain' => array(
-                     
+                     'CelebrityCategories'=>array('Categories')
 	    ),
 	    'conditions'=>array(
 				'CelebrityDetails.isdeleted' =>0,

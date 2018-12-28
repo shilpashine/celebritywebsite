@@ -39,9 +39,9 @@
                                     </div>
                                     <div class="details">
                                         <div class="number">
-                                            <span data-counter="counterup" data-value="1349">0</span>
+                                            <span><?php echo $newaray;?></span>
                                         </div>
-                                        <div class="desc"> New Feedbacks </div>
+                                        <div class="desc"> Total Celebrity </div>
                                     </div>
                                 </a>
                             </div>
@@ -52,8 +52,8 @@
                                     </div>
                                     <div class="details">
                                         <div class="number">
-                                            <span data-counter="counterup" data-value="12,5">0</span>M$ </div>
-                                        <div class="desc"> Total Profit </div>
+                                            <span><?php echo $newevent;?></span> </div>
+                                        <div class="desc"> Total Public Event </div>
                                     </div>
                                 </a>
                             </div>
@@ -64,9 +64,9 @@
                                     </div>
                                     <div class="details">
                                         <div class="number">
-                                            <span data-counter="counterup" data-value="549">0</span>
+                                            <span><?php echo $newprivate;?></span>
                                         </div>
-                                        <div class="desc"> New Orders </div>
+                                        <div class="desc"> Total Private Event </div>
                                     </div>
                                 </a>
                             </div>
@@ -76,9 +76,21 @@
                                         <i class="fa fa-globe"></i>
                                     </div>
                                     <div class="details">
-                                        <div class="number"> +
-                                            <span data-counter="counterup" data-value="89"></span>% </div>
-                                        <div class="desc"> Brand Popularity </div>
+                                        <div class="number"> 
+                                            <span><?php echo $neworg;?></span></div>
+                                        <div class="desc"> Total Event Organizers </div>
+                                    </div>
+                                </a>
+                            </div>
+                              <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+                                <a class="dashboard-stat dashboard-stat-v2 purple" href="#">
+                                    <div class="visual">
+                                        <i class="fa fa-globe"></i>
+                                    </div>
+                                    <div class="details">
+                                        <div class="number"> 
+                                            <span ></span>0</div>
+                                        <div class="desc"> Total Tickets Sell</div>
                                     </div>
                                 </a>
                             </div>

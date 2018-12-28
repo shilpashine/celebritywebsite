@@ -13,12 +13,17 @@
  * @license   https://opensource.org/licenses/mit-license.php MIT License
  */
 namespace App\Controller;
-
+//namespace Network\Session;
 use Cake\Core\Configure;
 use Cake\Network\Exception\ForbiddenException;
 use Cake\Network\Exception\NotFoundException;
 use Cake\View\Exception\MissingTemplateException;
 use Cake\Event\Event;
+use Cake\Network\Session\DatabaseSession;
+use Cake\Routing\Router;
+
+use Cake\ORM\TableRegistry;
+
 /**
  * Static content controller
  *
@@ -33,16 +38,16 @@ class PagesController extends AppController
 		parent::beforeFilter($event);
 	    $user = $this->Auth->User();
 	    if(!empty($user)){
-		  if($user['user_type']!=0){
+		  if($user['user_type']!=4){
 			return $this->redirect($this->Auth->logout());
 	        }
 		  else{
-			 	$this->Auth->allow(['login','logout','editProfile','replaceTab','swapTab']);
+			 	$this->Auth->allow(['login','logout','editProfile','replaceTab','swapTab','responseDetail']);
  
 		    }
 	    }
 	    else{
-			 $this->Auth->allow(['login','logout','editProfile','replaceTab','swapTab']);
+			 $this->Auth->allow(['login','logout','editProfile','replaceTab','swapTab','responseDetail','contact','about']);
 
 	    }
     }
@@ -62,8 +67,10 @@ class PagesController extends AppController
                  $this->loadModel('EventCategories');
                 $this->loadModel('Categories');
               $this->loadModel('EventOrganizers');
+               $this->loadModel('VisitorLogs');
                 
-                
+                                 
+
         $this->loadComponent('RequestHandler');
     } 
 
@@ -87,10 +94,11 @@ class PagesController extends AppController
               'contain' => array(
                      'EventCategories'=>array(
                          'EventDetails'=>array('EventOrganizers'=>['Users'],
-                             'EventPhotos','EventCelebrities'=>array('CelebrityDetails'=>array('CelebrityPhotos'))
-                             ),
+                             'EventPhotos','EventCelebrities'=>array('CelebrityDetails'=>array('CelebrityPhotos')),
+                            ),
                          'conditions'=>array(
 		'EventDetails.isdeleted' =>0,
+                'EventDetails.event_city' =>$this->request->session()->read('visitor.city'),
                 'EventDetails.status' =>1,
                 'EventDetails.approx_start_date >' => $date1
               
@@ -111,6 +119,41 @@ class PagesController extends AppController
                 'Categories.id' => 'DESC'
                 )
         ));
+  $number = $data_all11->count();
+  if($number<5){
+              $data_all11=$this->Categories->find('all', array(
+         'recursive' => -1,
+		
+              'contain' => array(
+                     'EventCategories'=>array(
+                         'EventDetails'=>array('EventOrganizers'=>['Users'],
+                             'EventPhotos','EventCelebrities'=>array('CelebrityDetails'=>array('CelebrityPhotos'))
+
+                             ),
+                         'conditions'=>array(
+		'EventDetails.isdeleted' =>0,
+                'EventDetails.event_country' =>$this->request->session()->read('visitor.country'),
+                'EventDetails.status' =>1,
+                'EventDetails.approx_start_date >' => $date1
+              
+				
+                ),
+                         
+                         )
+                    
+	    ),
+	    'conditions'=>array(
+		'Categories.is_deleted' =>0,
+                'Categories.status' =>1,
+                'Categories.parent_id' =>0
+              
+				
+                ),
+                'order' => array(
+                'Categories.id' => 'DESC'
+                )
+        ));
+  }
          // pr($data_all11);exit;
 		$data_all = $data_all11->toArray();
           // pr($data_all);exit;
@@ -119,12 +162,32 @@ class PagesController extends AppController
               
 		}
                 
+                
+               $datas=$this->CelebrityDetails->find('all', array(
+         'recursive' => -1,
+	 'contain' => array(
+             'CelebrityPhotos'
+	    ),
+	    'conditions'=>array(
+                'CelebrityDetails.isdeleted' =>0,
+                'CelebrityDetails.status' =>1
+            ),
+        'order' => array(
+            )
+        ));
+		$staff_data11 = $datas->toArray();
+              //  print_r($staff_data11);exit;
+		$this->set('staff_data',json_encode($staff_data11));  
+                
+                
+                
                      $data_all_event=$this->EventDetails->find('all', array(
          'recursive' => -1,
 		  'contain' => array('EventPhotos','EventCategories'=>array('Categories'),'EventOrganizers'=>['Users']),
 	    'conditions'=>array(
 		'EventDetails.isdeleted' =>0,
                 'EventDetails.status' =>1,
+                  'EventDetails.event_city' =>$this->request->session()->read('visitor.city'),
                'EventDetails.approx_start_date >' => $date1 
 			
                 ),
@@ -135,7 +198,7 @@ class PagesController extends AppController
         ));
             
 		$data_all_event = $data_all_event->toArray();
-            //   pr($data_all_event);exit;
+             //  pr($data_all_event);exit;
                 if(!empty($data_all_event)){
 		$this->set('data_all_event',$data_all_event);
             
@@ -184,6 +247,7 @@ class PagesController extends AppController
                              ),
                          'conditions'=>array(
 		'EventDetails.isdeleted' =>0,
+                'EventDetails.event_city' =>$this->request->session()->read('visitor.city'),
                 'EventDetails.status' =>1,
                'EventDetails.approx_start_date >' => $date1 
               
@@ -218,7 +282,57 @@ class PagesController extends AppController
                  
             
     }
+    public function responseDetail(){
+        
+        $country=$this->request->data['country'];
+        $city=$this->request->data['city'];
+        $state=$this->request->data['state'];
+        $ipadd=$this->request->data['ipadd'];
+      
+      
+       $this->request->session()->write('visitor.country', $country);
+       $this->request->session()->write('visitor.city', $city);
+       $this->request->session()->write('visitor.state', $state);
+       $this->request->session()->write('visitor.ipadd', $ipadd);
+       
     
+     //  $this->request->session()->write('visitor.ipadd', $ipadd);
+       $sessionid=session_id();
+        $url=$_SERVER['HTTP_REFERER'] ;
+        $catsTable11 = TableRegistry::get('VisitorLogs');
+        $catsvisitor = $catsTable11->newEntity();
+                      
+                       
+                      $catsvisitor->url=$url; 
+                    //  pr($catsvisitor);exit;
+                      $catsvisitor->country=$country;
+                      $catsvisitor->state=$state; 
+                       $catsvisitor->city=$city;
+                        $catsvisitor->ip_address=$ipadd;
+                         $catsvisitor->session_id=$sessionid;
+                     
+                        $catsvisitor->created=date("Y-m-d");
+                        $catsvisitor->modified=date("Y-m-d");
+                        
+                    if($this->VisitorLogs->save($catsvisitor)){
+                        echo 1;exit;
+                    }
+                   
+       exit;
+  
+      
+      
+            
+            
+    }
+    public function contact(){
+        
+        
+    }
+     public function about(){
+        
+        
+    }
     public function swapTab(){
          $date1=date('Y-m-d');
 	  $id=$this->request->data['cat_id'];
@@ -229,6 +343,7 @@ class PagesController extends AppController
 	    'conditions'=>array(
 		'EventDetails.isdeleted' =>0,
                 'EventDetails.status' =>1,
+                'EventDetails.event_city' =>$this->request->session()->read('visitor.city'),
                'EventDetails.approx_start_date >' => $date1 
 			
                 ),

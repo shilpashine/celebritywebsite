@@ -38,3 +38,47 @@ use Cake\Network\Exception\NotFoundException;
    
    echo $this->element('footer');
    ?>
+  <script>
+window.onload = function() {
+  ipLookUp();
+};
+</script>
+         <script>
+                        
+                        function ipLookUp () {
+                      
+  $.ajax('http://ip-api.com/json')
+  .then(
+      function success(response) {
+         var country=response.country;
+          var city=response.city;
+           var regionName=response.regionName;
+            var query=response.query;
+            
+     //    console.log('User\'s Location Data is ', response);
+      //    console.log('User\'s Country', response.country);
+          
+            $.ajax({
+				type: "POST",
+				evalScripts: true,
+				url: '<?php echo $this->Url->build('/Pages/response_detail', true);  ?>',
+				data: ({country:country,city:city,state:regionName,ipadd:query}),
+				success: function (data){
+                             // alert(data)
+                                
+                                   //$("#org_data").html(data);
+                                   
+                             
+				}
+		    });
+                    
+      },
+
+      function fail(data, status) {
+          console.log('Request failed.  Returned status of',
+                      status);
+      }
+  );
+}
+
+                        </script>       

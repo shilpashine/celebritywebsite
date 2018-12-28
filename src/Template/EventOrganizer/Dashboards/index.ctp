@@ -38,9 +38,9 @@
                                     </div>
                                     <div class="details">
                                         <div class="number">
-                                            <span data-counter="counterup" data-value="1349">0</span>
+                                            <span><?php echo $count_data;?></span>
                                         </div>
-                                        <div class="desc"> New Feedbacks </div>
+                                        <div class="desc">  Total Celebrity  </div>
                                     </div>
                                 </a>
                             </div>
@@ -51,36 +51,13 @@
                                     </div>
                                     <div class="details">
                                         <div class="number">
-                                            <span data-counter="counterup" data-value="12,5">0</span>M$ </div>
-                                        <div class="desc"> Total Profit </div>
+                                            <span><?php echo $count_event;?></span></div>
+                                        <div class="desc"> Total Event </div>
                                     </div>
                                 </a>
                             </div>
-                            <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
-                                <a class="dashboard-stat dashboard-stat-v2 green" href="#">
-                                    <div class="visual">
-                                        <i class="fa fa-shopping-cart"></i>
-                                    </div>
-                                    <div class="details">
-                                        <div class="number">
-                                            <span data-counter="counterup" data-value="549">0</span>
-                                        </div>
-                                        <div class="desc"> New Orders </div>
-                                    </div>
-                                </a>
-                            </div>
-                            <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
-                                <a class="dashboard-stat dashboard-stat-v2 purple" href="#">
-                                    <div class="visual">
-                                        <i class="fa fa-globe"></i>
-                                    </div>
-                                    <div class="details">
-                                        <div class="number"> +
-                                            <span data-counter="counterup" data-value="89"></span>% </div>
-                                        <div class="desc"> Brand Popularity </div>
-                                    </div>
-                                </a>
-                            </div>
+                           
+                         
                         </div>
                         <div class="clearfix"></div>
                         <!-- END DASHBOARD STATS 1-->

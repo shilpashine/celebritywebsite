@@ -5,9 +5,10 @@ echo $this->Html->css('style.css');
 echo $this->Html->css('responsive.css');
 echo $this->Html->css('wow/css/animate.css');
 echo $this->Html->css('font-awesome/css/font-awesome.min.css');
-echo $this->Html->css('bootstrap/css/bootstrap.min.css');
 echo $this->Html->css('ionicons/css/ionicons.min.css');
 echo $this->Html->css('bootstrap/css/bootstrap.min.css');
+
+echo $this->Html->css('bootstrap-fileinput/bootstrap-fileinput.css');
 echo $this->Html->css('owl-carousel/assets/owl.theme.default.css');
 echo $this->Html->css('owl-carousel/assets/owl.theme.min.css');
 echo $this->Html->css('owl-carousel/assets/owl.transitions.min.css');
@@ -17,7 +18,7 @@ echo $this->Html->css('bxslider/jquery.bxslider.min.css');
 echo $this->Html->css('magicsuggest/magicsuggest-min.css');
 echo $this->Html->css('quilljs/css/quill.bubble.css');
 echo $this->Html->css('quilljs/css/quill.core.css');
-echo $this->Html->css('quilljs/css/quill.core.css');
+echo $this->Html->css('quilljs/css/quill.snow.css');
 
 //
 //@import url('https://fonts.googleapis.com/css?family=Rubik:400,500,700&amp;subset=latin-ext');
@@ -70,16 +71,31 @@ echo $this->Html->css('quilljs/css/quill.core.css');
 			<div class="content-header">
 				<div class="container">
 					<div class="site-brand">
-						<a href="index.html">
-							<h2 class="logo-name">Celebrity</h2>
-						</a>
+						
+							<h2 class="logo-name">     <?php echo  $this->Html->link(
+    'Celebrity',
+    ['controller' => 'Pages', 'action' => 'display', '_full' => true]
+); ?></h2>
+						
 					</div><!-- .site-brand -->
 					<div class="right-header">					
 						<nav class="main-menu">
 							<button class="c-hamburger c-hamburger--htx"><span></span></button>
 							<ul>
+                                                            <li>
+                                                                  <?php echo  $this->Html->link(
+    'Home',
+    ['controller' => 'pages', 'action' => 'display', '_full' => true]
+); ?>
+								<!--<a href="eventDetails/eventList">Events<i class="fa fa-caret-down" aria-hidden="true"></i></a>-->
+								<!-- <ul class="sub-menu">
+									<li><a href="event_details.html">Create a campaign</a></li>
+									<li><a href="update_a_campaign.html">Update a campaign</a></li>
+								</ul> -->
+							</li>
 								<li>
-									<a href="index.html">Home<i class="fa fa-caret-down" aria-hidden="true"></i></a>
+                                                               
+									
 									<!-- <ul class="sub-menu">
 										<li><a href="index.html">Home v1</a></li>
 										<li><a href="index_2.html">Home v2</a></li>
@@ -118,8 +134,10 @@ echo $this->Html->css('quilljs/css/quill.core.css');
 									</ul> -->
 								</li>
 							<li>
-								<a href="about_us.html">About Us</a>
-								<!-- <ul class="sub-menu">
+<li>   <?php echo  $this->Html->link(
+    'About us',
+    ['controller' => 'pages', 'action' => 'about', '_full' => true]
+); ?></li>								<!-- <ul class="sub-menu">
 									<li><a href="coming_soon.html">Coming Soon</a></li>
 									<li><a href="about_us.html">About Us</a></li>
 									<li><a href="404.html">404</a></li>
@@ -147,7 +165,10 @@ echo $this->Html->css('quilljs/css/quill.core.css');
 										<li><a href="checkout.html">Checkout</a></li>
 									</ul>
 								</li> -->
-								<li><a href="contact_us.html">Contact</a></li>
+								<li>   <?php echo  $this->Html->link(
+    'Contact',
+    ['controller' => 'pages', 'action' => 'contact', '_full' => true]
+); ?></li>
 								<!-- <li>
 									<a href="#">Account<i class="fa fa-caret-down" aria-hidden="true"></i></a>
 									<ul class="sub-menu">
@@ -173,7 +194,19 @@ echo $this->Html->css('quilljs/css/quill.core.css');
 						</div>	
 
 						<div class="login login-button">
-							<a href="login.html" class="btn-primary">Login</a>
+                                                    <?php
+
+if(!empty($AuthUser)) {  
+   // pr($AuthUser);exit;
+   // user is logged in, show logout..user menu etc
+    echo $this->Html->link('Logout', array('controller' => 'users', 'action' => 'logout')); 
+} else {
+    echo $this->Html->link('Login', array('controller' => 'users', 'action' => 'login')); 
+    
+   // the user is not logged in
+  
+}
+?>
 						</div><!-- .login -->
 					</div><!--. right-header -->
 				</div><!-- .container -->
