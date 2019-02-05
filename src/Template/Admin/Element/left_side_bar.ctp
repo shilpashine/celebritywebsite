@@ -136,6 +136,16 @@
                                             <span class="title">New celebrity</span>
                                         </a>
                                     </li>
+                                     <li class="nav-item  ">
+                                        <a href="<?php echo $this->Url->build('/admin/celebrities/request_list', true); ?>" class="nav-link ">
+                                            <span class="title">Request New Celebrity</span>
+                                        </a>
+                                    </li>
+                                     <li class="nav-item  ">
+                                        <a href="<?php echo $this->Url->build('/admin/celebrities/privateparty_list', true); ?>" class="nav-link ">
+                                            <span class="title">Request Private Party</span>
+                                        </a>
+                                    </li>
                                 </ul>
                             </li>
                              <li class="nav-item  ">
@@ -148,6 +158,12 @@
                                     <li class="nav-item  ">
                                         <a href="<?php echo $this->Url->build('/admin/visitors/list_visitor', true); ?>" class="nav-link ">
                                             <span class="title">New Visitor</span>
+                                        </a>
+                                    </li>
+                                    
+                                    <li class="nav-item  ">
+                                        <a href="<?php echo $this->Url->build('/admin/booking-details/ticketlist_visitors', true); ?>" class="nav-link ">
+                                            <span class="title">Userwise TicketList </span>
                                         </a>
                                     </li>
                                 </ul>
@@ -228,6 +244,25 @@
                                     <li class="nav-item  ">
                                         <a href="<?php echo $this->Url->build('/admin/booking-details/event_detail_booking', true); ?>" class="nav-link ">
                                             <span class="title">Booking List</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                               <li class="nav-item  ">
+                                <a href="#" class="nav-link nav-toggle">
+                                    <i class="icon-briefcase"></i>
+                                    <span class="title">Setting Management</span>
+                                    <span class="arrow"></span>
+                                </a>
+                                <ul class="sub-menu">
+                                    <li class="nav-item  ">
+                                        <a href="<?php echo $this->Url->build('/admin/generals/tax', true); ?>" class="nav-link ">
+                                            <span class="title">Tax Management</span>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item  ">
+                                        <a href="<?php echo $this->Url->build('/admin/generals/contact-us', true); ?>" class="nav-link ">
+                                            <span class="title">Contact Management</span>
                                         </a>
                                     </li>
                                 </ul>

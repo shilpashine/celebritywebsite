@@ -80,6 +80,17 @@ echo $this->Html->css('quilljs/css/quill.snow.css');
 						<nav class="main-menu">
 							<button class="c-hamburger c-hamburger--htx"><span></span></button>
 							<ul>
+                                                            <li>
+                                                                  <?php echo  $this->Html->link(
+    'Home',
+    ['controller' => 'pages', 'action' => 'display', '_full' => true]
+); ?>
+								<!--<a href="eventDetails/eventList">Events<i class="fa fa-caret-down" aria-hidden="true"></i></a>-->
+								<!-- <ul class="sub-menu">
+									<li><a href="event_details.html">Create a campaign</a></li>
+									<li><a href="update_a_campaign.html">Update a campaign</a></li>
+								</ul> -->
+							</li>
 								<li>
                                                                
 									
@@ -120,8 +131,11 @@ echo $this->Html->css('quilljs/css/quill.snow.css');
 										<li><a href="update_a_campaign.html">Update a campaign</a></li>
 									</ul> -->
 								</li>
-							<li>
-								<a href="about_us.html">About Us</a>
+							
+								<li>   <?php echo  $this->Html->link(
+    'About us',
+    ['controller' => 'Pages', 'action' => 'about', '_full' => true]
+); ?></li>	
 								<!-- <ul class="sub-menu">
 									<li><a href="coming_soon.html">Coming Soon</a></li>
 									<li><a href="about_us.html">About Us</a></li>
@@ -131,16 +145,8 @@ echo $this->Html->css('quilljs/css/quill.snow.css');
 									<li><a href="faq.html">Faq</a></li>
 									<li><a href="event_details.html">Campaign details</a></li>
 								</ul> -->
-							</li>
-								<li>
-									<a href="blog.html">Blog</a>
-									<!-- <ul class="sub-menu">
-										<li><a href="blog_grid.html">Blog Grid</a></li>
-										<li><a href="blog_list.html">Blog List</a></li>
-										<li><a href="blog_list_sidebar.html">Blog Grid Sidebar</a></li>
-										<li><a href="blog_details.html">Blog Details</a></li>
-									</ul> -->
-								</li>
+							
+								
 								<!-- <li>
 									<a href="#">Shop<i class="fa fa-caret-down" aria-hidden="true"></i></a>
 									<ul class="sub-menu">
@@ -150,7 +156,10 @@ echo $this->Html->css('quilljs/css/quill.snow.css');
 										<li><a href="checkout.html">Checkout</a></li>
 									</ul>
 								</li> -->
-								<li><a href="contact_us.html">Contact</a></li>
+								<li>   <?php echo  $this->Html->link(
+    'Contact',
+    ['controller' => 'Pages', 'action' => 'contact', '_full' => true]
+); ?></li>
 								<!-- <li>
 									<a href="#">Account<i class="fa fa-caret-down" aria-hidden="true"></i></a>
 									<ul class="sub-menu">
@@ -163,7 +172,10 @@ echo $this->Html->css('quilljs/css/quill.snow.css');
 										<li><a href="account_payments.html">Payments</a></li>
 									</ul>
 								</li> -->
-								<li><a href="faq.html">Faq</a></li>
+								<li>   <?php echo  $this->Html->link(
+    'Faq',
+    ['controller' => 'Pages', 'action' => 'faq', '_full' => true]
+); ?></li>
 							</ul>
 						</nav><!-- .main-menu -->
 						<div class="search-icon">
@@ -181,6 +193,8 @@ echo $this->Html->css('quilljs/css/quill.snow.css');
 if(!empty($AuthUser)) {  
   
     echo $this->Html->link('Logout', array('controller' => 'users', 'action' => 'logout')); 
+   
+     echo $this->Html->link('Myaccount', array('controller' => 'users', 'action' => 'index'));
 } else {
     echo $this->Html->link('Login', array('controller' => 'users', 'action' => 'login')); 
     

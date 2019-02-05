@@ -7,7 +7,7 @@ $baseurl='http://localhost/git_project/WebIdeasole/celebritycalling/'
 					<h1>Bollywood  Celebrity</h1>
 					<div class="breadcrumbs">
 						<ul>
-							<li><a href="index.html">Home</a><span>/</span></li>
+							<li>Home<span>/</span></li>
 							<li>Bollywood  Celebrity</li>
 						</ul>
 					</div><!-- .breadcrumbs -->
@@ -99,7 +99,7 @@ $baseurl='http://localhost/git_project/WebIdeasole/celebritycalling/'
             <div>
                 <img data-u="image" src="<?php echo $baseurl;?>img/medium/<?php echo $data_all_event->event_photos[0]->image;?>" />
                 <div data-u="thumb">
-                    <img data-u="thumb" src="<?php echo $baseurl;?>images/1.jpg" />
+                    <img data-u="thumb" src="<?php echo $baseurl;?>img/medium/<?php echo $val1->image;?>" />
                 </div>
             </div>
            <?php } ?>
@@ -133,16 +133,30 @@ $baseurl='http://localhost/git_project/WebIdeasole/celebritycalling/'
 								<h3><?php echo $data_all_event->event_title;?></h3>
 								<div class="campaign-description"><p> <?php echo $data_all_event->event_description;?></p></div>
 								<div class="campaign-author clearfix">
+                                                                    <?php if(!empty($data_all_event->event_organizers)){ ?>
 									<div class="author-profile">
 										<a class="author-icon" href="#"><img src="<?php echo $baseurl;?>img/medium/<?php echo $data_all_event->event_organizers[0]->users[0]->image;?>" alt=""></a>by <a class="author-name" href="#"><?php echo $data_all_event->event_organizers[0]->users[0]->fname.' '.$data_all_event->event_organizers[0]->users[0]->lname;?></a>
 									</div>
+                                                                    <?php }?>
 									<div class="author-address"><span class="ion-location"></span><?php echo $data_all_event->event_location;?></div>
 								</div>
+                                                                 <?php     $amount11=0;   if(!empty($data_all_event->event_orders)){ foreach($data_all_event->event_orders as $val_amount){
+                                                                                                  if(!empty($val_amount->total_price)){
+            
+                                                                                                     $amount11=$amount11+$val_amount->product_price;
+                                                                                 } }   }  ?>
 								<div class="process">
-									<div class="raised"><span></span></div>
+									<div class="progress">
+  <div class="progress-bar progress-bar-primary progress-bar-striped" role="progressbar"
+  aria-valuenow="70" aria-valuemin="0" aria-valuemax="100" style="width:<?php if(!empty( $data_all_event->event_amount)&& !empty( $data_all_event->target_amount) ) {  $new_amount=($amount11/$data_all_event->event_amount)*100 ; echo round($new_amount);}?>%">
+   
+  </div>
+</div>                
 									<div class="process-info">
 										<div class="process-funded"><span><i class="fa fa-inr" aria-hidden="true"></i> <?php echo $data_all_event->target_amount;?></span>funding goal</div>
 										<div class="process-pledged"><span><?php echo $data_all_event->event_amount;?></span>pledged</div>
+                                                                                <div class="process-funded"><span><?php if(!empty( $data_all_event->event_amount)&& !empty( $data_all_event->target_amount) ) {  $new_amount=($amount11/$data_all_event->event_amount)*100 ; echo round($new_amount);}?>%</span>funded</div>
+												
 										
                                                                              
 										<div class="process-time"><span><?php if(!empty($data_all_event->approx_start_date)){
@@ -153,7 +167,8 @@ $baseurl='http://localhost/git_project/WebIdeasole/celebritycalling/'
                                                                                                                                                 ?>
 																		<?php echo  $diff->format("%R%a days");?>
                                                                                                                                                 <?php }?></span>days ago</div>
-										<div class="process-time"><span>100</span>Likes</div>
+<!--										<div class="process-time"><span>100</span>Likes</div>-->
+                                                                               
 									</div>
 								</div>
 <!--								<div class="button">
@@ -194,10 +209,9 @@ $baseurl='http://localhost/git_project/WebIdeasole/celebritycalling/'
 								</ul>
 								<div class="campaign-content">
 									<div id="campaign" class="tabs active">
-										<p>Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris.Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris.Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris.</p>
-										<img src="images/banner.jpg" alt="">
-										<p>A wonderful serenity has taken possession of my entire soul, like these sweet mornings of spring which I enjoy with my whole heart. I am alone, and feel the charm of existence in this spot, which was created for the bliss of souls like mine. I am so happy, my dear friend, so absorbed in the exquisite sense of mere tranquil existence, that I neglect my talents. I should be incapable of drawing a single stroke at the present moment.</p>
-										<p>One morning, when Gregor Samsa woke from troubled dreams, he found himself transformed in his bed into a horrible vermin. He lay on his armour-like back, and if he lifted his head a little he could see his brown belly, slightly domed and divided by arches into stiff sections. The bedding was hardly able to cover it and seemed ready to slide off any moment. His many legs, pitifully thin compared with the size of the rest of him, waved</p>
+                                                                         <?php    if(!empty($data_all_event)){  ?>
+										<p> <?php echo $data_all_event->event_description;?></p>
+                                                                         <?php } ?>
 									</div>
 									<!-- <div id="backer" class="tabs">
 										<table>
@@ -240,17 +254,39 @@ $baseurl='http://localhost/git_project/WebIdeasole/celebritycalling/'
 									</div> -->
 									<div id="faq" class="tabs">
 										<h2>Frequently Asked Questions</h2>
+                                                                                  <?php echo $this->Flash->render('flash'); ?>
 										<p>Looks like there aren't any frequently asked questions yet. Ask the project creator directly.</p>
-										<a href="#" class="btn-primary">Ask a question</a>
+                                                                                 <?php   echo $this->Form->create('Post', array('url' => '/event-details/faq_add'));
+
+
+											?>
+                                                                                <div class="field-textarea">
+                                                                                    <textarea rows="8" cols="90" placeholder="Your Comment" name="event_faq"></textarea>
+                                                                                                    <input type="hidden" value="<?php echo $id;?>" name="event_new_id" placeholder="" />
+                                                                                                    <input type="hidden" value="<?php  if(!empty($AuthUser)){ echo $AuthUser['id']; }?>" name="user_id" placeholder="" />
+									  			
+								  				</div>
+                                                                                   <?php  if(!empty($AuthUser)){ ?>
+                                                                                <input type="submit" name="ask_qun" value="Ask a question" class="btn-primary"/>
+                                                                                   <?php } ?>
+                                                                                </form>
+<!--										<a href="#" class="btn-primary">Ask a question</a>-->
 									</div>
 									<div id="updates" class="tabs">
 										<ul>
-											<li>
-												<p class="date">30-06-2017</p>
-												<h3>New Project Launches in Bangalore</h3>
-												<div class="desc"><p>Bacon spare ribs rump chuck turkey, ham hock capicola. Strip steak tongue kielbasa, boudin hamburger t-bone capicola turducken. Landjaeger meatloaf pork belly spare ribs chuck.</p></div>
+                                                                                   <?php if(!empty($data_history)){
+                                                                                       foreach($data_history as $val){
+                                                                                       $start_date=explode('T',$val->approx_start_date);
+                                                                                       $start_date1= date("d-m-Y", strtotime($start_date[0]));
+                                                                                     //  $upcomming_date=date_create(date("Y-m-d",strtotime($val->approx_start_date)));
+                                                                                       ?>
+											<li> 
+												<p class="date"><?php echo $start_date1;?></p>
+												<h3><?php echo $val->event_title;?></h3>
+												<div class="desc"><p><?php echo $val->event_description;?>.</p></div>
 											</li>
-											<li>
+                                                                                   <?php }} ?>
+<!--											<li>
 												<p class="date">31-05-2018</p>
 												<h3>Our First Office Start</h3>
 												<div class="desc"><p>Corned beef leberkas fatback porchetta, strip steak salami turkey short loin flank ham hock landjaeger. Leberkas pork belly kevin shoulder filet mignon. Bacon spare ribs rump chuck turkey, ham hock capicola. Strip steak tongue kielbasa, boudin hamburger t-bone capicola turducken. Landjaeger meatloaf pork belly spare ribs chuck.</p></div>
@@ -264,45 +300,66 @@ $baseurl='http://localhost/git_project/WebIdeasole/celebritycalling/'
 												<p class="date">31-05-2018</p>
 												<h3>Our Employee Reach 100 Person</h3>
 												<div class="desc"><p>Sed cursus hendrerit odio, at aliquet leo hendrerit a. Nulla ultricies sagittis dolor, quis maximus magna consectetur eu. Cras pharetra aliquam fringilla. Integer placerat sapien dapibus varius luctus. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum in aliquam urna, ultrices lobortis lacus. Praesent mi enim, congue semper volutpat ut, bibendum tempor arcu.</p></div>
-											</li>
+											</li>-->
 										</ul>
 									</div>
 									<div id="comment" class="tabs comment-area">
-										<h3 class="comments-title">1 Comment</h3>
+                                                                                <h3 class="comments-title"> <?php  if(!empty($data_all_comment[0]->event_comments)){ echo count($data_all_comment[0]->event_comments); } ?> Comment</h3>
 										<ol class="comments-list">
 											<li class="comment clearfix"> 
 												<div class="comment-body">
 													<div class="comment-avatar"><img src="images/dashboard-img-01.jpg" alt=""></div>
+                                                                                                        <?php if(!empty($data_all_comment[0]->event_comments)){ foreach($data_all_comment[0]->event_comments as $val){ ?>
 													<div class="comment-info">
 														<header class="comment-meta"></header>
-														<cite class="comment-author">Jordan B. Goodale</cite>
+														<cite class="comment-author"><?php echo $val->name;?></cite>
 														<div class="comment-inline">
-															<span class="comment-date">2 days ago</span>
-															<a href="#" class="comment-reply">Reply</a>
+<span class="comment-date">
+    
+ <?php                                                                                      $curr_date=date_create(date("Y-m-d"));
+                                                                                                                                                $upcomming_date=date_create(date("Y-m-d",strtotime($val->created)));
+                                                                                                                                                
+                                                                                                                                                $diff=date_diff($upcomming_date,$curr_date);
+                                                                                                                                                ?>
+																		<div class="process-time"><span><?php echo  $diff->format("%R%a days");?></span> ago</div>
+                                                                                                                                                <?php ?>
+
+</span>
+<!--                                                                                                                        <a href="#" class="comment-reply" onclick="reply(1)">Reply</a>-->
 														</div>
-														<div class="comment-content"><p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Equidem e Cn. Sequitur disserendi ratio cognitioque naturae; Nunc vides, quid faciat. Duo Reges: constructio interrete. Memini vero, inquam; Quis Aristidem non mortuum diligit?</p></div>
-													</div>
+														<div class="comment-content"><p><?php echo $val->message;?></p></div>
+                                                                                                                <div id="reply_msg1"></div>
+                                                                                                        </div>
+                                                                                                        <?php } }?>
 												</div>
 											</li>
 										</ol>
 										<div id="respond" class="comment-respond">
+                                                                                    <?php echo $this->Flash->render('flash'); ?>
 											<h3 id="reply-title" class="comment-reply-title">Leave A Comment?</h3>
-											<form action="#" id="commentForm">
+                                                                                      <?php   echo $this->Form->create('Post', array('url' => '/event-details/comment_user'));
+
+
+											?>
 												<div class="field-textarea">
-								  					<textarea rows="8" placeholder="Your Comment"></textarea>
+                                                                                                    <textarea rows="8" placeholder="Your Comment" name="event_comment"></textarea>
 								  				</div>
 												<div class="row">
 									  				<div class="col-md-4 field">
-									  					<input type="text" value="" name="s" placeholder="Your Name" />
+                                                                                                            <input type="text" value="" name="name" placeholder="Your Name" />
+									  					<input type="hidden" value="<?php echo $id;?>" name="event_id" placeholder="" />
+                                                                                                                <input type="hidden" value="<?php  if(!empty($AuthUser)){ echo $AuthUser['id']; }?>" name="auth_id" placeholder="" />
 									  				</div>
 									  				<div class="col-md-4 field">
-									  					<input type="text" value="" name="s" placeholder="Your Email" />
+									  					<input type="email" value="" name="email" placeholder="Your Email" />
 									  				</div>
 									  				<div class="col-md-4 field">
-									  					<input type="text" value="" name="s" placeholder="Website" />
+									  					<input type="text" value="" name="website" placeholder="Website" />
 									  				</div>
 								  				</div>
-											  	<button type="submit" value="Send Messager" class="btn-primary">Post Comment</button>
+                                                                                            <?php  if(!empty($AuthUser)){ ?>
+											  	<input type="submit" value="Send Messager" class="btn-primary" value="Post Comment"/>
+                                                                                            <?php } ?>
 											</form>
 										</div>
 									</div>
@@ -393,3 +450,11 @@ $baseurl='http://localhost/git_project/WebIdeasole/celebritycalling/'
  
                 
                     </script>
+                    <script>
+                        
+                        function reply(curr_id){
+                           
+                          $("#reply_msg"+curr_id).append("<form method='post' action=''><textarea rows='8' placeholder='Your Comment' name='event_reply'/> <input type='submit' value='Send Messager' class='btn-primary' value='Post Reply'/>></textarea></form>")
+                        }
+                        
+                        </script>

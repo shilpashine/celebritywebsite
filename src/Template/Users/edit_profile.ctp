@@ -4,8 +4,8 @@
 					<h1>Edit Profile</h1>
 					<div class="breadcrumbs">
 						<ul>
-							<li><a href="index.html">Home</a><span>/</span></li>
-							<li><a href="profile.html">Profile</a><span>/</span></li>
+							<li>Home<span>/</span></li>
+							<li>Profile<span>/</span></li>
 							<li>Edit Profile</li>
 						</ul>
 					</div><!-- .breadcrumbs -->
@@ -14,7 +14,16 @@
 			<div class="campaign-form form-update ">
 				<h4 class="edit">Edit Profile</h4>
 				<div class="container profile ">
-
+                                        <div class="col-lg-3">
+							<nav class="account-bar">
+								<ul>
+									<li class="active"><a href="<?php echo $this->Url->build('/users/index', true); ?>">Dashboard</a></li>
+									<li><a href="<?php echo $this->Url->build('/users/edit_profile', true); ?>">Profile</a></li>
+                                                                        <li><a href="<?php echo $this->Url->build('/users/current_booking', true); ?>">Current Booking</a></li>
+                                                                        <li><a href="<?php echo $this->Url->build('/users/booking_history', true); ?>">Booking History</a></li>
+								</ul>
+							</nav>
+						</div>
 					<div class="col-md-8 mx-auto photo-tabs ">
 						<ul class="nav nav-pills mb-3 nav-justified" id="pills-tab" role="tablist">
 							<li class="nav-item">
@@ -35,27 +44,47 @@
 						  	<form action="#">
 						  		<div class="field settings">
                                                                     <input type="hidden" name="edit_user_id" parsley-trigger="change"  class="form-control" id="user_id" value="<?php echo $user_data[0]['id'];?>" />		
-				  					<input type="text" value="" id="fname" name="title" placeholder="First Name" />
+                                                                        <input type="text" value="<?php if(!empty($user_data[0]['fname'])) { echo $user_data[0]['fname']; }?>" id="fname" name="fname" placeholder="First Name"  />
 				  				</div>
 
 				  				<div class="field settings">
 									
-				  					<input type="text" value="" id="lname" name="title" placeholder="Last Name" />
+                                                                        <input type="text" value="<?php if(!empty($user_data[0]['lname'])) { echo $user_data[0]['lname']; }?>" id="lname" name="title" placeholder="Last Name" />
 				  				</div>
-                                                            
+                                                            <div class="field settings">
+									
+                                                                        <input type="text" value="<?php if(!empty($user_data[0]['email'])) { echo $user_data[0]['email']; }?>" id="email" name="email" placeholder="Enter Email" />
+				  				</div>
+                                                            <div class="field settings">
+									
+                                                                        <input type="text" value="<?php if(!empty($user_data[0]['phone_number'])) { echo $user_data[0]['phone_number']; }?>" id="phone" name="phone_number" placeholder="Enter Phone No" />
+				  				</div>
+                                                            <div class="field settings">
+									
+                                                                <input type="text" value="<?php if(!empty($user_data[0]['username'])) { echo $user_data[0]['username']; }?>" id="username" name="username" placeholder="username" readonly=""  required=""/>
+				  				</div>
 
 				  				<div class="field settings clearfix">
 		  					<label for="clocation">Address *</label>
 							<span class="label-desc">You can Change your locaton</span>
 			  				<div class="field align-left">
-			  					<input type="text" value="" id="autocomplete" placeholder="address" />
+			  					<input type="text" value="<?php if(!empty($user_data[0]['address'])) { echo $user_data[0]['address']; }?>" id="autocomplete" placeholder="address" />
 			  				</div>
 			  				<div class="field align-right ">
-			  					<input type="text" value="" id="locality" placeholder="city" />
+			  					<input type="text" value="<?php if(!empty($user_data[0]['city'])) { echo $user_data[0]['city']; }?>" id="locality" placeholder="city" />
                                                                 <input type="hidden" class="form-control" name="event_lat" id="lat" required=""  autocomplete="on" placeholder="Enter latitude" readonly="" >
               <input type="hidden" class="form-control " name="event_long" id="lng" required=""  autocomplete="on" placeholder="Enter longitude" readonly=""  >
 
 			  				</div>
+                                                        <div class="field settings">
+									
+                                                                <input type="text" value="<?php if(!empty($user_data[0]['country'])) { echo $user_data[0]['country']; }?>" id="country" name="country" placeholder="country" />
+				  				</div>
+                                                        <div class="field settings">
+									
+                                                                <input type="text" value="<?php if(!empty($user_data[0]['postal_code'])) { echo $user_data[0]['postal_code']; }?>" id="postal_code" name="postal_code" placeholder="postal_code" />
+				  				</div>
+                                                        
 						</div> 
                                                             <div id="count_image"></div>
 <div class="field settings">
@@ -177,15 +206,15 @@ var autocomplete,componentForm;
         for (var i = 0; i < place.address_components.length; i++) {
           var addressType = place.address_components[i].types[0];
          for (var j = 0; j < place.address_components[i].types.length; j++) {
-//        if (place.address_components[i].types[j] == "postal_code") {
-//          document.getElementById('postal_code').value = place.address_components[i].long_name;
-//
-//        }
+        if (place.address_components[i].types[j] == "postal_code") {
+         document.getElementById('postal_code').value = place.address_components[i].long_name;
+
+        }
 //        
-//        if (place.address_components[i].types[j] == "country") {
-//          document.getElementById('country').value = place.address_components[i].long_name;
-//
-//        }
+       if (place.address_components[i].types[j] == "country") {
+         document.getElementById('country').value = place.address_components[i].long_name;
+
+        }
         
         
       }
@@ -242,17 +271,22 @@ var autocomplete,componentForm;
     function edit_detail(){
         var fname=$("#fname").val();
         var lname=$("#lname").val();
+         var email=$("#email").val();
+        var phone=$("#phone").val();
+        var username=$("#username").val();
+         var country=$("#country").val();
+          var locality=$("#locality").val();
         var location=$("#autocomplete").val();
-        var locality=$("#locality").val();
+        var postal_code=$("#postal_code").val();
       
           var user_id=$("#user_id").val();
             $.ajax({
 				type: "POST",
 				evalScripts: true,
 				url: '<?php echo $this->Url->build('/users/edit_profile_fpart', true);  ?>',
-				data: ({fname:fname,lname:lname,location:location,locality:locality,user_id:user_id}),
+				data: ({fname:fname,lname:lname,location:location,locality:locality,user_id:user_id,email:email,username:username,phone:phone,country:country,username:username,postal_code:postal_code}),
 				success: function (data){
-                                    alert(data);
+                                  //  alert(data);
                                     if(data==1){
                                  
                                    $("#count_image").html("Sucessfully Save Details.");

@@ -74,6 +74,11 @@
                                                     <input type="number" class="form-control" id="form_control_1" name="phone_no" placeholder="Enter phone number">
                                                     <label for="form_control_1">Phone No</label>
                                                 </div>
+                                                
+                                                <div class="form-group form-md-line-input">
+                                                    <input type="text" class="form-control" id="form_control_1" name="facebook" placeholder="Enter Facebook">
+                                                    <label for="form_control_1">Facebook</label>
+                                                </div>
                                                 <div class="form-group form-md-line-input">
                                                     <div class="input-group">
                                                         <span class="input-group-addon">

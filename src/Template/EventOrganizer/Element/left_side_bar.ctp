@@ -154,6 +154,20 @@
                                     </li>
                                 </ul>
                             </li>
+                             <li class="nav-item  ">
+                                <a href="#" class="nav-link nav-toggle">
+                                    <i class="icon-briefcase"></i>
+                                    <span class="title">Booking Management</span>
+                                    <span class="arrow"></span>
+                                </a>
+                                <ul class="sub-menu">
+                                    <li class="nav-item  ">
+                                        <a href="<?php echo $this->Url->build('/event_organizer/booking-details/event_detail_booking', true); ?>" class="nav-link ">
+                                            <span class="title">Booking List</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
                             
                             
                             

@@ -410,6 +410,13 @@
                                                         <span class="help-block">Enter Page Title...</span>
                                                     </div>
 
+  <div class="form-group form-md-line-input">
+                                                        <input type="text" class="form-control" name="slug"  readonly required="" value="<?php echo $event_data->slug;?>" id="form_control_1" placeholder="Enter slug">
+                                                        <label for="form_control_1">Slug
+                                                            <span class="required">*</span>
+                                                        </label>
+                                                        <span class="help-block">Enter Page Slug...</span>
+                                                    </div>
 
                                                      
 

@@ -49,7 +49,7 @@
                                                                                                         
                                                                                                    
                                                                                             //   pr($val->total_price);
-                                                                                                    $total=$total+$val->total_price;
+                                                                                                    $total=$total+$val->product_price;
                                                                                                     } }}
 												?>
                                                 <tr>

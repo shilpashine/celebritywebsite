@@ -82,7 +82,7 @@
                                     </div>
                                 </a>
                             </div>
-                              <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+<!--                              <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
                                 <a class="dashboard-stat dashboard-stat-v2 purple" href="#">
                                     <div class="visual">
                                         <i class="fa fa-globe"></i>
@@ -93,7 +93,7 @@
                                         <div class="desc"> Total Tickets Sell</div>
                                     </div>
                                 </a>
-                            </div>
+                            </div>-->
                         </div>
                         <div class="clearfix"></div>
                         <!-- END DASHBOARD STATS 1-->

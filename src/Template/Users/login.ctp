@@ -4,9 +4,10 @@
 				<div class="main-content-login ">
 					<div class="form-login">
 						<h2>Log in with your account</h2>
+                                                  <?php echo $this->Flash->render('flash'); ?>
 						<form action="#" method="POST" id="loginForm" class="clearfix">
 			  				<div class="field">
-                                                            <input type="email" value="" name="username" id="email" placeholder="E-mail Address" />
+                                                            <input type="text" value="" name="username" id="phone" placeholder="Enter Your Phone" />
 			  				</div>
 			  				<div class="field">
                                                             <input type="password" value="" name="password" id="password" placeholder="Password" />

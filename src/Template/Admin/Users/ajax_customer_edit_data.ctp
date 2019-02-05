@@ -36,6 +36,10 @@
                                                     </label>
                                                     <span class="help-block">Enter your Last name...</span>
                                                 </div>
+                                                                                 <div class="form-group form-md-line-input">
+                                                    <input type="text" class="form-control" id="form_control_1" name="facebook" placeholder="Enter Facebook" value="<?php echo $staff_data->facebook;?>">
+                                                    <label for="form_control_1">Facebook</label>
+                                                </div>
                                                 <div class="form-group form-md-line-input">
                                                     <input type="email" class="form-control" id="form_control_1" name="email" placeholder="Enter your email" value="<?php echo $staff_data->email;?>"   required="required">
                                                     <label for="form_control_1">Email

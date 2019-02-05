@@ -14,7 +14,7 @@ class CelebritiesController extends AppController {
 			return $this->redirect($this->Auth->logout());
 	        }
 		  else{
-			 	$this->Auth->allow(['editProfile','listLead','viewRemark']);
+			 	$this->Auth->allow(['editProfile','listLead','viewRemark','requestList','privatepartyList']);
  
 		    }
 	    }
@@ -32,6 +32,9 @@ class CelebritiesController extends AppController {
                  $this->loadModel('CelebrityVideos');
                    $this->loadModel('CelebrityPhotos');
                     $this->loadModel('CelebrityCategories');
+                     $this->loadModel('EventFollows');
+                        $this->loadModel('CelebrityRequests');
+                              $this->loadModel('CelebrityPrivaterequests');
 		
         $this->loadComponent('RequestHandler');
     } 
@@ -65,7 +68,7 @@ class CelebritiesController extends AppController {
 		 //echo $id;exit;
 	 $datas=$this->CelebrityDetails->get($id, array(
          'recursive' => -1,
-	 'contain' => array(
+	 'contain' => array('EventFollows',
              'CelebrityCategories','CelebrityPhotos','CelebrityVideos'
 	    ),
 	    'conditions'=>array(
@@ -111,7 +114,7 @@ class CelebritiesController extends AppController {
          
          $user_datas=$this->CelebrityDetails->find('all', array(
          'recursive' => -1,
-		 'contain' => array(
+		 'contain' => array('EventFollows',
                      'CelebrityCategories'=>array('Categories')
 	    ),
 	    'conditions'=>array(
@@ -212,7 +215,124 @@ $this->Flash->set('The data has been successfully inserted.');
                         
 		}
       }      
-	
+	  public function listAllcelebrity(){
+        $userdata=$this->Auth->User();	
+        if(!empty($userdata)){		
+         $this->viewBuilder()->setLayout('default_datatable');
+         
+          $data_all=$this->Categories->find('all', array(
+         'recursive' => -1,
+		'fields'=>array('id','category_name'),
+	    'conditions'=>array(
+				'Categories.is_deleted' =>0,
+                                'Categories.status' =>1
+				
+                ),
+                'order' => array(
+                'Categories.id' => 'DESC'
+                )
+        ));
+		$data_all = $data_all->toArray();
+             
+                if(!empty($data_all)){
+		$this->set('data_all',json_encode($data_all));
+              
+		}
+         
+         
+         
+         $user_datas=$this->CelebrityDetails->find('all', array(
+         'recursive' => -1,
+		 'contain' => array('EventFollows',
+                     'CelebrityCategories'=>array('Categories')
+	    ),
+	    'conditions'=>array(
+				'CelebrityDetails.isdeleted' =>0,
+				
+                ),
+                'order' => array(
+                'CelebrityDetails.id' => 'DESC'
+                )
+        ));
+		$user_datas = $user_datas->toArray();
+                
+		//pr($user_datas);exit;
+		if(!empty($user_datas)){
+		$this->set('celebrity_datas',json_encode($user_datas));
+		}
+		}
+		else
+		{
+		$this->redirect(array("controller"=>"users","action"=>"login"));
+		}
+                
+                
+                
+      
+      }     
+      
+      public function requestList(){
+        $userdata=$this->Auth->User();	
+        if(!empty($userdata)){		
+         $this->viewBuilder()->setLayout('default_datatable');
+         
+          $data_all=$this->CelebrityRequests->find('all', array(
+         'recursive' => -1,
+		
+	    'conditions'=>array(
+				'CelebrityRequests.isdeleted' =>0,
+                                
+				
+                ),
+                'order' => array(
+                'CelebrityRequests.id' => 'DESC'
+                )
+        ));
+		$data_all = $data_all->toArray();
+             
+                if(!empty($data_all)){
+		$this->set('data_all',json_encode($data_all));
+              
+		}
+         
+         
+         	
+                        
+		}
+      }  
+      
+      
+       public function privatepartyList(){
+        $userdata=$this->Auth->User();	
+        if(!empty($userdata)){		
+         $this->viewBuilder()->setLayout('default_datatable');
+         
+          $data_all=$this->CelebrityPrivaterequests->find('all', array(
+         'recursive' => -1,
+              'contain'=>array('CelebrityDetails','Users'),
+		
+	    'conditions'=>array(
+				'CelebrityPrivaterequests.isdeleted' =>0,
+                                
+				
+                ),
+                'order' => array(
+                'CelebrityPrivaterequests.id' => 'DESC'
+                )
+        ));
+		$data_all = $data_all->toArray();
+            //     pr($data_all);exit;
+             
+                if(!empty($data_all)){
+		$this->set('data_all',json_encode($data_all));
+              
+		}
+        
+         
+         	
+                        
+		}
+      }  
           public function changeStatus($id=NUlL){
          $this->autoRender = false ;
 

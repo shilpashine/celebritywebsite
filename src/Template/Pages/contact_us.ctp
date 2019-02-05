@@ -44,12 +44,11 @@ $this->layout = 'default';
 										<div class="contact-info">
 											<h3>Contact Infomation</h3>
 											<ul>
-												<li><i class="fa fa-map-marker" aria-hidden="true"></i>Fulham Rd, Fulham, London SW6 1HS, UK</li>
-												<li><i class="fa fa-phone" aria-hidden="true"></i>(+1) 123.456.789</li>
-												<li><i class="fa fa-mobile" aria-hidden="true"></i>(+1) 987.654.321</li>
-												<li><i class="fa fa-envelope-o" aria-hidden="true"></i>sayhello@IdeaPresswp.com</li>
+                                                                                                <li><i class="fa fa-map-marker" aria-hidden="true"></i> <?php if(!empty($user_data['address'])){ echo $user_data['address'];  } ?></li>
+												<li><i class="fa fa-phone" aria-hidden="true"></i><?php if(!empty($user_data['phone'])){ echo $user_data['phone'];  } ?></li>
+												<li><i class="fa fa-mobile" aria-hidden="true"></i><?php if(!empty($user_data['alt_ph'])){ echo $user_data['alt_ph'];  } ?></li>
+												<li><i class="fa fa-envelope-o" aria-hidden="true"></i><?php if(!empty($user_data['email'])){ echo $user_data['email'];  } ?></li>
 											</ul>
-											<div class="contact-desc"><p>Lorem Ipsum is simply dummy text of the printing & typesetting industry. Lorem Ipsum has been scrambled it to make type specimen book.</p></div>
 										</div>
 									</div>
 								</div>

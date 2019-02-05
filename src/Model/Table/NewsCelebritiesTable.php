@@ -15,7 +15,7 @@ $this->belongsTo('CelebrityDetails', [
 ]);
 
 //$this->belongsTo('CelebrityCategories');
-		//$this->hasMany('NewsCelebrities');
+		$this->hasMany('NewsDetails');
              //   $this->hasMany('NewsPhotos');
                 //$this->hasMany('EventVideos');
                  // $this->hasMany('EventCategories');

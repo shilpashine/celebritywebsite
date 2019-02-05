@@ -8,7 +8,7 @@ class CelebrityDetailsTable extends Table
     {
 		
 $this->setTable('celebrity_details');		
-//$this->belongsTo('CelebrityCategories');
+$this->hasMany('EventFollows');
 
 
              
@@ -16,8 +16,11 @@ $this->setTable('celebrity_details');
                 $this->hasMany('CelebrityPhotos');
                 $this->hasMany('CelebrityVideos');
                $this->hasMany('EventCelebrities');
-                
-                
+                $this->hasMany('CelebrityRattings');
+              $this->hasMany('NewsCelebrities', [
+   
+    'foreignKey' => 'celebrity_id'
+]);
                 
     }
     

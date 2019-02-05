@@ -75,6 +75,7 @@ class CmsDetailsController extends AppController {
                 $user = $usersTable->newEntity();
 
 			$user->page_title=$this->request->data["title11"];
+                        $user->slug=$this->request->data["slug"];
 			$user->description=$this->request->data["description"];
 			$user->meta_title=$this->request->data["meta_title"];
                         $user->meta_key=$this->request->data["meta_key"];
@@ -250,6 +251,7 @@ $usersTable->save($article);
 
 			
 			$user9->page_title=$this->request->data["title11"];
+                        $user9->slug=$this->request->data["slug"];
 			$user9->description=$this->request->data["description"];
 			$user9->meta_title=$this->request->data["meta_title"];
                         $user9->meta_key=$this->request->data["meta_key"];

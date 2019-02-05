@@ -366,10 +366,12 @@
                                                 
                                                 
                                                 <div class="form-group form-md-line-input">
-                                                  <input type="hidden" id="div_url_count" value="<?php echo count($event_data->event_ticket_details);?>"/>
+                                                    <input type="hidden" id="div_url_count11" name="div_url_count" value="<?php echo count($event_data->event_ticket_details);?>"/>
                                                    <?php   $i=0; foreach($event_data->event_ticket_details as $val){  ?>
                                                   <div id="ticket_url<?php echo $val->id;?>">
                                                   <label> ADD Ticket Type </label>
+                   <input type="text" class="form-control" name="ticket_id[]" id="form_control_1"  value="<?php echo $val->id; ?>" placeholder=" Enter Ticket ID">
+
                                                         <input type="text" class="form-control" name="ticket_name[]" id="form_control_1"  value="<?php echo $val->ticket_name; ?>" placeholder=" Enter Ticket Name">
                                                          <input type="text" class="form-control" name="ticket_desc[]" id="form_control_1"  value="<?php echo $val->ticket_desc; ?>" placeholder=" Enter Ticket Description">
                                               <input type="text" class="form-control" name="ticket_color[]" id="form_control_1"  value="<?php echo $val->ticket_color; ?>" placeholder=" Enter Ticket Color">
@@ -389,7 +391,7 @@
 
  <?php $i++;} ?>
                                                         <div id="url_ticket"></div>
-                                                    <button type="button" class="btn default" onclick="video_url()">Add More Ticket Type</button>
+                                                    <button type="button" class="btn default" onclick="video_url_edit()">Add More Ticket Type</button>
                                                 </div>
                                                 
                                                 
@@ -515,4 +517,81 @@ function validateEmail(emailField){
     }
  }
 </script>
+  <script>
+var autocomplete,componentForm;
+       componentForm = {
+        locality: 'long_name',
+      
+      };
+    
+      function initAutocomplete() {
+        // Create the autocomplete object, restricting the search to geographical
+        // location types.
+        autocomplete = new google.maps.places.Autocomplete(
+            (document.getElementById('autocomplete')),
+            {types: ['geocode'],componentRestrictions:{country: 'in'}},);
+    
+        // When the user selects an address from the dropdown, populate the address
+        // fields in the form.
+        autocomplete.addListener('place_changed', fillInAddress);
+       
+       }
+      function fillInAddress() {
+        // Get the place details from the autocomplete object.
+        var place = autocomplete.getPlace();
+    
+        for (var component in componentForm) {
+          document.getElementById(component).value = '';
+          document.getElementById(component).disabled = false;
+        }
+        // Get each component of the address from the place details
+        // and fill the corresponding field on the form.
+    
+    var lat=place.geometry.location.lat();
+    var lng=place.geometry.location.lng();
+    //var newlat=console.log(lat);
+    document.getElementById('lat').value = lat;
+    document.getElementById('lng').value = lng;
+    
+        for (var i = 0; i < place.address_components.length; i++) {
+          var addressType = place.address_components[i].types[0];
+         for (var j = 0; j < place.address_components[i].types.length; j++) {
+        if (place.address_components[i].types[j] == "postal_code") {
+          document.getElementById('postal_code').value = place.address_components[i].long_name;
+
+        }
+        
+        if (place.address_components[i].types[j] == "country") {
+          document.getElementById('country').value = place.address_components[i].long_name;
+
+        }
+        
+        
+      }
+          if (componentForm[addressType]) {
+            var val = place.address_components[i][componentForm[addressType]];
+            document.getElementById(addressType).value = val;
+          }
+        }
+      }
+      
+       function geolocate() {
+        if (navigator.geolocation) {
+          navigator.geolocation.getCurrentPosition(function(position) {
+            var geolocation = {
+              lat: position.coords.latitude,
+              lng: position.coords.longitude
+            };
+        
+            var circle = new google.maps.Circle({
+              center: geolocation,
+              radius: position.coords.accuracy
+            });
+            autocomplete.setBounds(circle.getBounds());
+          });
+        }
+      }
+      </script>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBMl4BZyXV1gkjUVWDBgY00Mss1aTUYUp0&libraries=places&callback=initAutocomplete" async defer></script>
+                  
 <?php exit;?>

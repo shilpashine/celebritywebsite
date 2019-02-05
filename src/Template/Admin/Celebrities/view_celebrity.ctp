@@ -82,6 +82,14 @@
                                                     <textarea class="form-control" id="form_control_1" name="curr_address" readonly=""><?php echo $staff_data->current_location;?></textarea>
                                                       <label for="form_control_1"> Current Address</label>
                                                 </div>
+                                                
+                                                
+                                                 <div class="form-group form-md-line-input">
+                                                    <textarea class="form-control" id="form_control_1" name="no_celebrity" readonly=""><?php  if(!empty($staff_data->event_follows)){ $total=0; echo $total=$total+count($staff_data->event_follows);}else{ echo $total=0; }?></textarea>
+                                                      <label for="form_control_1"> No Of Followers</label>
+                                                </div>
+                                                
+                                                
                                                  <div class="form-group">
                                                     <label class="control-label col-md-4">Select Category
                                                         <span class="required"> * </span>

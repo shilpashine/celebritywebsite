@@ -1,9 +1,10 @@
 <?php
-namespace App\Controller\Manager;
+namespace App\Controller\EventOrganizer;
 use Cake\Controller\Controller;
 use Cake\Event\Event;
 class AppController extends Controller {
     public function initialize() {
+        
         parent::initialize();
         $this->loadComponent('RequestHandler');
         $this->loadComponent('Flash');

@@ -41,7 +41,13 @@
                                                         <span class="help-block">Enter Page Title...</span>
                                                     </div>
 
-
+<div class="form-group form-md-line-input">
+                                                        <input type="text" class="form-control" name="slug" required="" id="form_control_1" placeholder="Enter Slug">
+                                                        <label for="form_control_1"> Slug
+                                                            <span class="required">*</span>
+                                                        </label>
+                                                        <span class="help-block">Enter Slug...</span>
+                                                    </div>
                                                      
 
                                                    <div class="form-group form-md-line-input">

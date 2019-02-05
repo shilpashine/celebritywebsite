@@ -18,18 +18,18 @@ class EventDetailsController extends AppController {
           $user = $this->Auth->User();
                 if(!empty($user)){
                   
-                             if($user['user_type']!=4){
+                             if($user['user_type']!=1){
                                    return $this->redirect($this->Auth->logout());
 
                            }
                              else{
-                                    $this->Auth->allow(['login','logout','eventList','replaceTab','swapTab','eventDetail','thankyou']);
+                                    $this->Auth->allow(['login','logout','eventList','replaceTab','swapTab','eventDetail','thankyou','commentUser','faqAdd']);
 
                              }
 
                }
                   else{
-                                    $this->Auth->allow(['register','login','eventList','replaceTab','swapTab','eventDetail']);
+                                    $this->Auth->allow(['register','login','eventList','replaceTab','swapTab','eventDetail',]);
 
                        }  
                }
@@ -57,7 +57,10 @@ class EventDetailsController extends AppController {
              $this->loadModel('EventTicketCodeDetails');
                 $this->loadModel('EventTicketDetails');
                 $this->loadModel('EventOrders');
-             
+                 $this->loadModel('EventComments');
+              $this->loadModel('EventFaqs');
+              $this->loadModel('TaxDetails');
+                $this->loadModel('EventCopyDetails');
                   
                       
                  //   'EventCategories','EventCelebrities','EventOrganizers'
@@ -72,10 +75,11 @@ class EventDetailsController extends AppController {
         
         $data_all_event=$this->EventDetails->find('all', array(
          'recursive' => -1,
-		  'contain' => array('EventPhotos','EventCategories'=>array('Categories'),'EventOrganizers'=>['Users']),
+		  'contain' => array('EventPhotos','EventOrders','EventCategories'=>array('Categories'),'EventOrganizers'=>['Users']),
 	    'conditions'=>array(
 		'EventDetails.isdeleted' =>0,
                 'EventDetails.status' =>1,
+                'EventDetails.event_city' =>$this->request->session()->read('visitor.city'),
                'EventDetails.approx_start_date >' => $date1 
 			
                 ),
@@ -91,18 +95,53 @@ class EventDetailsController extends AppController {
 		$this->set('data_all_event',$data_all_event);
             
 		}
-        
+         if($this->request->is("post") or $this->request->is("put")){
+                $city=$this->request->data["event_city"];
+              
+               
+               $data_all_event=$this->EventDetails->find('all', array(
+         'recursive' => -1,
+		  'contain' => array('EventPhotos','EventOrders','EventCategories'=>array('Categories'),'EventOrganizers'=>['Users']),
+	    'conditions'=>array(
+		'EventDetails.isdeleted' =>0,
+                'EventDetails.status' =>1,
+                 'EventDetails.event_city LIKE' =>"%".$city."%",
+               'EventDetails.approx_start_date >' => $date1 
+			
+                ),
+                     
+                'order' => array(
+                'EventDetails.id' => 'DESC'
+                )
+        ));
+            
+		$data_all_event = $data_all_event->toArray();
+        //    pr($data_all_event);exit;
+                if(!empty($data_all_event)){
+		$this->set('data_all_event',$data_all_event);
+            
+		}
+               
+               
+         }
     }
      public function eventDetail($id=NULL){
          
          if(!empty($id)){
+             $this->set('id',($id));
+             
+            
+           //  $read_event_id=$this->request->session()->read('eventdetail.current_event_detail_id');
+             
+            
            $this->viewBuilder()->setLayout('default1');
             	
         $date1=date('Y-m-d');
         
+        
         $data_all_event=  $this->EventDetails->get($id, array(
          'recursive' => -1,
-		  'contain' => array('EventPhotos','EventTicketDetails','EventCategories'=>array('Categories'),'EventOrganizers'=>['Users']),
+		  'contain' => array('EventPhotos','EventOrders','EventTicketDetails','EventCategories'=>array('Categories'),'EventOrganizers'=>['Users']),
 	    'conditions'=>array(
 		'EventDetails.isdeleted' =>0,
                 'EventDetails.status' =>1,
@@ -124,15 +163,61 @@ class EventDetailsController extends AppController {
             
 		}
                 
+      $data_all_eventhistory=  $this->EventCopyDetails->find('all', array(
+         'recursive' => -1,
+	   'conditions'=>array(
+		'EventCopyDetails.isdeleted' =>0,
+                'EventCopyDetails.status' =>1,
+               'EventCopyDetails.event_id' => $id 
+			
+                ),
+                     
+                'order' => array(
+                'EventCopyDetails.id' => 'DESC'
+                )
+        ));
+ 
+        
+        
+		$data_history = $data_all_eventhistory->toArray();
+           //  pr($data_history);exit;
+                if(!empty($data_history)){
+		$this->set('data_history',($data_history));
+            
+		}
+
+                    
                 
+                
+                
+      $data_all_comment=$this->EventDetails->find('all', array(
+         'recursive' => -1,
+		  'contain' => array('EventComments'=>array('conditions'=>array('EventComments.status' =>1,'EventComments.isdeleted' =>0))),
+	    'conditions'=>array(
+		'EventDetails.isdeleted' =>0,
+                'EventDetails.id' =>$id
+               
+                ),
+                     
+                'order' => array(
+                'EventDetails.id' => 'DESC'
+                )
+        ));
+            
+		$data_all_comment = $data_all_comment->toArray();
+           //   pr($data_all_comment);exit;
+                if(!empty($data_all_comment)){
+		$this->set('data_all_comment',$data_all_comment);
+            
+		}           
+                  $this->request->session()->write('eventdetail.current_event_detail_id',$id);
              
-                if($this->request->is("post") or $this->request->is("put")){
-      $this->request->session()->write('visitor.lastid',$id);
-        $this->request->session()->write('visitor.newpage', 'eventDetail');
+  if($this->request->is("post") or $this->request->is("put")){
+           
     
         
-                     $userdata=$this->Auth->User();	
-        if(!empty($userdata)){		
+     $userdata=$this->Auth->User();	
+    if(!empty($userdata)){		
                     
                 $datas15=$this->EventTicketDetails->find('all', array(
                  'recursive' => -1,
@@ -164,8 +249,8 @@ class EventDetailsController extends AppController {
                     $ticketevent->event_date= date("Y-m-d", strtotime($date[0]));
                     $ticketevent->location=$data_all_event["event_location"];
                     
-                      $ticketevent->total_price=$qty*$datas15[0]['ticket_price']; 
-                
+                      $ticketevent->total_price=($qty*$datas15[0]['ticket_price'])+(($qty*$datas15[0]['ticket_price'])*.18); 
+                $ticketevent->product_price=$qty*$datas15[0]['ticket_price'];
                         $ticketevent->created=date("Y-m-d");
                         $ticketevent->modified=date("Y-m-d");
                        // pr($ticket);exit;
@@ -226,6 +311,72 @@ class EventDetailsController extends AppController {
               $this->redirect(array("controller"=>"pages","action"=>"index"));
          }
      }
+     
+     public function commentUser(){
+          $userdata=$this->Auth->User();	
+        if(!empty($userdata)){	
+            $id=$userdata['id'];
+       
+        if(!empty($id)){
+          // $this->viewBuilder()->setLayout('default1');
+            	
+        $date1=date('Y-m-d');
+        $usersTable = TableRegistry::get('EventComments');
+        $user = $usersTable->newEntity();
+        $user->name=$this->request->data["name"];
+	$user->website=$this->request->data["website"];
+        $user->email=$this->request->data["email"];
+        $user->event_id=$this->request->data["event_id"];
+        $user->message=$this->request->data["event_comment"];
+        $user->user_id=$this->request->data["auth_id"];
+        $user->created=$date1;
+        $user->modified=$date1;
+        
+        if($this->EventComments->save($user)){
+             $this->Flash->set('Comments Added Successfully');
+		  $this->redirect(array("controller"=>"event-details","action"=>"event_detail",$this->request->data["event_id"])); 
+        }
+        }
+        
+        else{
+            $this->redirect(array("controller"=>"pages","action"=>"index"));
+        }
+          }
+     }
+     
+     public function faqAdd(){  
+    
+    $userdata=$this->Auth->User();	
+        if(!empty($userdata)){	
+            $id=$userdata['id'];
+       
+        if(!empty($id)){
+          // $this->viewBuilder()->setLayout('default1');
+            	
+        $date1=date('Y-m-d');
+        $usersTable = TableRegistry::get('EventFaqs');
+        $user = $usersTable->newEntity();
+        
+        $user->event_id=$this->request->data["event_new_id"];
+        $user->message=$this->request->data["event_faq"];
+        $user->user_id=$this->request->data["user_id"];
+        $user->created=$date1;
+        $user->modified=$date1;
+        
+        if($this->EventFaqs->save($user)){
+             $this->Flash->set('Faq Added Successfully');
+		  $this->redirect(array("controller"=>"event-details","action"=>"event_detail",$this->request->data["event_new_id"])); 
+        }
+        }
+        
+        else{
+            $this->redirect(array("controller"=>"pages","action"=>"index"));
+        }
+          }
+    
+    
+  }
+     
      public function thankyou(){
           $this->viewBuilder()->setLayout('ajax');
            $userdata=$this->Auth->User();	
@@ -238,12 +389,24 @@ class EventDetailsController extends AppController {
   }
         if(!empty($userdata)){	
             
+             $datas=$this->TaxDetails->get(1, array(
+         'recursive' => -1,
+		
+	   
+        'order' => array(
+                'TaxDetails.id' => 'DESC'
+            )
+        ));
+		$user_data = $datas->toArray();
+              //  pr($user_data);exit;
+		$this->set('user_data',$user_data);
+            
             
        
      
                 $data_all=$this->EventOrders->get($lastid, array(
          'recursive' => -1,
-		'contain'=>array('EventTicketCodeDetails'=>['EventTicketDetails']),
+		'contain'=>array('EventDetails'=>['EventPhotos'],'EventTicketCodeDetails'=>['EventTicketDetails']),
 	    'conditions'=>array(
 		'EventOrders.isdeleted' =>0
                
@@ -254,7 +417,7 @@ class EventDetailsController extends AppController {
                 )
         ));
 		$data_all = $data_all->toArray();
-         //  pr($data_all);exit;
+        //  pr($data_all);exit;
                 if(!empty($data_all)){
 		$this->set('datass',($data_all));
               

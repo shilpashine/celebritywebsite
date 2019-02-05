@@ -1,5 +1,4 @@
 <?php
- 
 namespace App\Controller;
 use Cake\Controller\Controller;
 use Cake\Event\Event;
@@ -35,7 +34,7 @@ class AppController extends Controller {
             // $session = $this->request->session();
         $AuthUser = $this->Auth->user();
         $this->set('AuthUser', $AuthUser);
-       //pr($AuthUser);exit;
+      //pr($AuthUser);exit;
 }
     }
     

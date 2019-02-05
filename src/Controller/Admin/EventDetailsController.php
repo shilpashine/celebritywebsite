@@ -14,7 +14,7 @@ class EventDetailsController extends AppController {
 			return $this->redirect($this->Auth->logout());
 	        }
 		  else{
-			 	$this->Auth->allow(['editProfile','listLead','viewRemark']);
+			 	$this->Auth->allow(['editProfile','listLead','viewRemark','commentStatus','faqComment','eventAlllist']);
  
 		    }
 	    }
@@ -44,7 +44,9 @@ class EventDetailsController extends AppController {
                 $this->loadModel('EventPhotos');
                   $this->loadModel('EventVideos');
                     $this->loadModel('EventTicketCodeDetails');
-             
+              $this->loadModel('EventComments');
+               $this->loadModel('EventCopyDetails');
+              
                   
                       
                  //   'EventCategories','EventCelebrities','EventOrganizers'
@@ -515,6 +517,166 @@ $this->Flash->set('The data has been successfully inserted.');
 		}
       }      
     }
+    public function eventAlllist(){
+        $userdata=$this->Auth->User();	
+        if(!empty($userdata)){		
+         $this->viewBuilder()->setLayout('default_datatable');
+         
+          $data_all=$this->Categories->find('all', array(
+         'recursive' => -1,
+		'fields'=>array('id','category_name'),
+	    'conditions'=>array(
+		'Categories.is_deleted' =>0,
+                'Categories.status' =>1
+				
+                ),
+                'order' => array(
+                'Categories.id' => 'DESC'
+                )
+        ));
+		$data_all = $data_all->toArray();
+             
+                if(!empty($data_all)){
+		$this->set('data_all',json_encode($data_all));
+              
+		}
+         
+            $data_all_event=$this->EventDetails->find('all', array(
+         'recursive' => -1,
+		
+	    'conditions'=>array(
+		'EventDetails.isdeleted' =>0,
+                
+			
+                ),
+                'order' => array(
+                'EventDetails.id' => 'DESC'
+                )
+        ));
+            
+		$data_all_event = $data_all_event->toArray();
+             
+                if(!empty($data_all_event)){
+		$this->set('data_all_event',json_encode($data_all_event));
+              
+		}    
+                
+                
+                
+                
+                
+          $user_datas11=$this->Users->find('all', array(
+         'recursive' => -1,
+		 'contain' => array(
+	    ),
+	    'conditions'=>array(
+				'Users.is_deleted' =>0,
+                'Users.status' =>1,
+				'Users.user_type' =>4
+                ),
+                'order' => array(
+                'Users.id' => 'DESC'
+                )
+        ));
+		$user_datas11 = $user_datas11->toArray();
+                
+		//pr($user_datas);exit;
+		if(!empty($user_datas11)){
+		$this->set('celebrity_datas12',json_encode($user_datas11));
+		}
+         
+                 
+         $cel_datas=$this->CelebrityDetails->find('all', array(
+         'recursive' => -1,
+		 'contain' => array(
+                     
+	    ),
+	    'conditions'=>array(
+				'CelebrityDetails.isdeleted' =>0,
+				'CelebrityDetails.status' =>1
+                ),
+                'order' => array(
+                'CelebrityDetails.id' => 'DESC'
+                )
+        ));
+		$cel_datas = $cel_datas->toArray();
+                
+		//pr($user_datas);exit;
+		if(!empty($cel_datas)){
+		$this->set('cel_datas',json_encode($cel_datas));
+		}
+                
+                
+                
+                
+        
+      }      
+    }
+     public function eventComment($id=NULL){
+        $userdata=$this->Auth->User();	
+        if(!empty($userdata)){		
+         $this->viewBuilder()->setLayout('default_datatable');
+         
+          $data_all_comment=$this->EventDetails->find('all', array(
+         'recursive' => -1,
+		  'contain' => array('EventComments'=>array('Users','conditions'=>array('EventComments.isdeleted' =>0))),
+	    'conditions'=>array(
+		'EventDetails.isdeleted' =>0,
+                'EventDetails.id' =>$id
+               
+                ),
+                     
+                'order' => array(
+                'EventDetails.id' => 'DESC'
+                )
+        ));
+            
+		$data_all_comment = $data_all_comment->toArray();
+           // pr($data_all_comment);exit;
+                if(!empty($data_all_comment)){
+		$this->set('data_all_comment',$data_all_comment);
+            
+		}     
+         
+         
+      }      
+    }
+    public function faqComment($id=NULL){
+        $userdata=$this->Auth->User();	
+        if(!empty($userdata)){		
+         $this->viewBuilder()->setLayout('default_datatable');
+         
+          $data_all_comment=$this->EventDetails->find('all', array(
+         'recursive' => -1,
+		  'contain' => array('EventFaqs'=>array('Users','conditions'=>array('EventFaqs.isdeleted' =>0))),
+	    'conditions'=>array(
+		'EventDetails.isdeleted' =>0,
+                'EventDetails.id' =>$id
+               
+                ),
+                     
+                'order' => array(
+                'EventDetails.id' => 'DESC'
+                )
+        ));
+            
+		$data_all_comment = $data_all_comment->toArray();
+       //     pr($data_all_comment);exit;
+                if(!empty($data_all_comment)){
+		$this->set('data_all_comment',$data_all_comment);
+            
+		}     
+         
+         
+      }      
+    }
+    
+    
+    
+    
+    
+    
+    
           public function changeStatus($id=NUlL){
          $this->autoRender = false ;
 
@@ -557,6 +719,96 @@ $usersTable->save($article);
         
         
     }
+    
+    public function changeSlider($id=NUlL){
+         $this->autoRender = false ;
+
+        $userdata=$this->Auth->User();	
+        if(!empty($userdata)){		
+       
+           
+            
+              $user_datas=$this->EventDetails->get($id, array(
+         'recursive' => -1,
+	
+	    'conditions'=>array(
+                'EventDetails.isdeleted' =>0,
+                'EventDetails.id' =>$id
+            ),
+        'order' => array(
+             'EventDetails.id' => 'DESC'
+            )
+        ));     
+              
+              
+            
+        
+      
+         $usersTable = TableRegistry::get('EventDetails');
+         $article = $usersTable->get($id);
+         
+if($user_datas->is_slider==1){
+    $article->is_slider = '0';
+}else{
+    $article->is_slider = '1';
+}
+ // Return article with id 12
+
+$usersTable->save($article);
+ $this->Flash->set('The data has been successfully updated.');
+ $this->redirect(array("controller"=>"event-details","action"=>"event-list"));	        
+
+        }
+        
+        
+    }
+    
+       public function commentStatus($id=NUlL){
+         $this->autoRender = false ;
+
+        $userdata=$this->Auth->User();	
+        if(!empty($userdata)){		
+       
+           
+            
+              $user_datas=$this->EventComments->get($id, array(
+         'recursive' => -1,
+	
+	    'conditions'=>array(
+                'EventComments.isdeleted' =>0,
+                'EventComments.id' =>$id
+            ),
+        'order' => array(
+             'EventComments.id' => 'DESC'
+            )
+        ));     
+        //  pr($user_datas);exit;    
+              
+            
+        
+      
+         $usersTable = TableRegistry::get('EventComments');
+         $article = $usersTable->get($id);
+         
+if($user_datas->status==1){
+    $article->status = '0';
+}else{
+    $article->status = '1';
+}
+ // Return article with id 12
+
+$usersTable->save($article);
+ $this->Flash->set('The data has been successfully updated.');
+ $this->redirect(array("controller"=>"event-details","action"=>"event-list"));	        
+
+        }
+        
+        
+    }
+    
+    
+  
+    
     
     public function ajaxCustomerEditData(){
 	    $id=$this->request->data['id'];
@@ -691,20 +943,45 @@ $usersTable->save($article);
                         }
                         }
 			$user->terms=$this->request->data["terms"];
-//			$user->dob=$this->request->data["category_id"];
-//                        $user->gendar=$this->request->data["event_org_id"];
-//                        $user->description=$this->request->data["event_celebrity"];
-//                        $user->gendar=$this->request->data["event_amount"];
-//			$user->home_location=$this->request->data["event_target_amount"];			
-//                        $user->current_location=$this->request->data["event_ticket_price"];
-//                         $user->current_location=$this->request->data["is_seats"];
-                        
-                        
-                        
-
+			
 			$user->created=date("Y-m-d");
 			$user->modified=date("Y-m-d");
                        $user1= $this->EventDetails->save($user);
+                       $usersTable_copy = TableRegistry::get('EventCopyDetails');
+                $user_copy = $usersTable_copy->newEntity();
+                 $user_copy->event_id=$id;
+                $user_copy->event_title=$this->request->data["event_title"];
+			$user_copy->event_description=$this->request->data["description"];
+			$user_copy->event_location=$this->request->data["event_location"];
+                        $user_copy->event_country=$this->request->data["event_country"];
+                        $user_copy->event_city=$this->request->data["event_city"];
+                        $user_copy->event_pincode=$this->request->data["event_pincode"];
+			$user_copy->lat=$this->request->data["event_lat"];			
+                        $user_copy->lang=$this->request->data["event_long"];
+                        
+                        
+                        $user_copy->approx_start_date=$this->request->data["event_startdate"];
+			$user_copy->approx_end_date=$this->request->data["event_enddate"];
+			$user_copy->start_time=$this->request->data["event_starttime"];
+                        $user_copy->end_time=$this->request->data["event_endtime"];
+                        $user_copy->event_type=$this->request->data["event_type"];
+                        $user_copy->event_amount=$this->request->data["event_amount"];
+			$user_copy->target_amount=$this->request->data["event_target_amount"];			
+                        if(!empty($this->request->data["is_seats"])){
+                         $user_copy->is_seat=$this->request->data["is_seats"];
+                        
+                        if($this->request->data["is_seats"]==1){
+                            if(!empty($this->request->data["event_seats"])){
+                        $user_copy->seats=$this->request->data["event_seats"];
+                            }
+                        }
+                        }
+			$user_copy->terms=$this->request->data["terms"];
+			
+			$user_copy->created=date("Y-m-d");
+			$user_copy->modified=date("Y-m-d");
+                       $user_copy= $this->EventCopyDetails->save($user_copy);
+                       
                         $insertedId = $id;
                         
                         $user_datas=$this->EventVideos->find('all', array(
@@ -775,21 +1052,21 @@ $usersTable->save($article);
                         }           
                                    
                         
-                   $datas15=$this->EventTicketDetails->find('all', array(
-         'recursive' => -1,
-	 
-	    'conditions'=>array(
-                'EventTicketDetails.event_detail_id' =>$insertedId
-            )
-        
-        ));
-         $datas16 = $datas15->toArray();
-                        foreach($datas16 as $val)    {
-                            $users_table11 = TableRegistry::get('eventTicketDetails');
-                            $users22 = $users_table11->get($val->id);
-                            $users_table11->delete($users22);
-                            
-                        }             
+//                   $datas15=$this->EventTicketDetails->find('all', array(
+//         'recursive' => -1,
+//	 
+//	    'conditions'=>array(
+//                'EventTicketDetails.event_detail_id' =>$insertedId
+//            )
+//        
+//        ));
+//         $datas16 = $datas15->toArray();
+//                        foreach($datas16 as $val)    {
+//                            $users_table11 = TableRegistry::get('eventTicketDetails');
+//                            $users22 = $users_table11->get($val->id);
+//                            $users_table11->delete($users22);
+//                            
+//                        }             
                         
                         
                         
@@ -854,12 +1131,14 @@ $usersTable->save($article);
                         }
                         }   
                         
-                        if(!empty($this->request->data["ticket_name"])){
-                         for($n=0;$n < count($this->request->data["ticket_name"]);$n++){
+                        if(!empty($this->request->data["div_url_count"])){
+                        if($this->request->data["div_url_count"]>0){
+                            
+            for($n=0;$n < ($this->request->data["div_url_count"]);$n++){
                             
                       
                       $catsTable11 = TableRegistry::get('EventTicketDetails');
-                      $ticket1 = $catsTable11->newEntity();
+                      $ticket1 = $catsTable11->get($this->request->data["ticket_id"][$n]);
                       $ticket1->event_detail_id=$insertedId;
                       $ticket1->ticket_name=$this->request->data["ticket_name"][$n];
                       $ticket1->ticket_color=$this->request->data["ticket_color"][$n];
@@ -869,8 +1148,9 @@ $usersTable->save($article);
                       
                       if(!empty($this->request->data["ticket_avl"][$n])){
                         $avl=$this->request->data["ticket_avl"][$n];
-                      }
+                      }else{
                       $avl=$qty;
+                      }
                       if(!empty($this->request->data["add_ticket"][$n])){
                            $qty=$qty+$this->request->data["add_ticket"][$n];
                            $avl=$avl+$this->request->data["add_ticket"][$n];
@@ -896,6 +1176,48 @@ $usersTable->save($article);
                       
                       
                       $ticket1->ticket_price=$this->request->data["ticket_price"][$n];      
+                      // pr($this->request->data["ticket_name"]);exit;
+                        $ticket1->created=date("Y-m-d");
+                        $ticket1->modified=date("Y-m-d");
+                       // pr($ticket);exit;
+                    $this->EventTicketDetails->save($ticket1);
+                            
+                            
+                        }
+                        }}     
+                        
+                        if(!empty($this->request->data["ticket_name1"])){
+                         for($n=0;$n < count($this->request->data["ticket_name1"]);$n++){
+                            
+                      
+                      $catsTable11 = TableRegistry::get('EventTicketDetails');
+                      $ticket1 = $catsTable11->newEntity();
+                      $ticket1->event_detail_id=$insertedId;
+                      $ticket1->ticket_name=$this->request->data["ticket_name1"][$n];
+                      $ticket1->ticket_color=$this->request->data["ticket_color1"][$n];
+                      
+                      
+                      $qty=$this->request->data["ticket_qty1"][$n];
+                      
+                      
+                      $avl=$qty;
+                     
+                      
+                      $ticket1->ticket_desc=$this->request->data["ticket_desc1"][$n];
+                       $ticket1->ticket_qty=$qty;
+                       $ticket1->ticket_avl=$avl;
+                       
+                       
+                      $event_code=$insertedId.time();
+                        $s_count=0; $s_count1=1;
+                         $sq=sprintf('%04u', $s_count1);
+                         $s_count_last=$sq+$qty;
+                          $sq_last=sprintf('%04u', $s_count_last);
+                      $ticket1->ticket_start_code=$event_code.'-'.$sq;
+                      $ticket1->ticket_end_code=$event_code.'-'.$sq_last;
+                      
+                      
+                      $ticket1->ticket_price=$this->request->data["ticket_price1"][$n];      
                       // pr($this->request->data["ticket_name"]);exit;
                         $ticket1->created=date("Y-m-d");
                         $ticket1->modified=date("Y-m-d");
@@ -966,9 +1288,9 @@ public function deleteMultiimage(){
      }
      public function deleteTicket(){
 	  $id=$this->request->data['id'];
-            $users_table = TableRegistry::get('EventTicketDetails');
-         $users = $users_table->get($id);
-         if($users_table->delete($users)){
+            $users_table11 = TableRegistry::get('EventTicketDetails');
+         $users = $users_table11->get($id);
+         if($users_table11->delete($users)){
              echo  1;exit;
          }
             

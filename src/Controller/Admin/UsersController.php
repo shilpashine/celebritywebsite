@@ -212,6 +212,7 @@ class UsersController extends AppController {
                         $user->password=$this->request->data["password"];
                          $user->pswd_token=$this->request->data["password"];
                         $user->phone_number=$this->request->data["phone_no"];
+                          $user->facebook=$this->request->data["facebook"];
                         $user->dob=$this->request->data["dob"];
 			$user->gender=$this->request->data["gendar"];
 			$user->description=$this->request->data["description"];			
@@ -804,7 +805,7 @@ $usersTable->save($article);
                         $user->phone_number=$this->request->data["phone_no"];
                         $user->dob=$this->request->data["dob11"];
                         $user->username=$this->request->data["username"];
-                        
+                        $user->facebook=$this->request->data["facebook"];
 			$user->gender=$this->request->data["gendar"];
 			$user->description=$this->request->data["description"];			
 			$user->address=$this->request->data["address"];

@@ -23,6 +23,23 @@ $this->setTable('event_details');
 //            conditions => array('EventOrgnizersTable.organizer_id' => 'Users.id')
       
 ]);
+                    $this->hasMany('EventComments',[
+       'className'=>'EventComments',
+            'foreignKey' =>'event_id',
+             'bindingKey'=> 'id',
+//            conditions => array('EventOrgnizersTable.organizer_id' => 'Users.id')
+      
+]);
+                    
+                      $this->hasMany('EventFaqs',[
+       'className'=>'EventFaqs',
+            'foreignKey' =>'event_id',
+             'bindingKey'=> 'id',
+//            conditions => array('EventOrgnizersTable.organizer_id' => 'Users.id')
+      
+]);
+                      
+                      
     }
     
 }

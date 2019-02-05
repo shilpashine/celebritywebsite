@@ -71,18 +71,24 @@ class DashboardsController extends AppController {
                 )
         ));
 		$userdatas = $user_cele->toArray();
+               
                 $m=0;
+                if(!empty($userdatas)){
               foreach($userdatas as $val){
                   if(!empty($val->celebrity_detail)){
                       $m++;
                   }
                   
               }
+                }
 		
 		if(!empty($userdatas)){
                 $count_data= $m;
 		$this->set('count_data',json_encode($count_data));
-		}
+		}else{
+                    $count_data=0;
+                    $this->set('count_data',json_encode($count_data));
+                }
           
               $user_org=$this->EventOrganizers->find('all', array(
          'recursive' => -1,

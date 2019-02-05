@@ -65,7 +65,7 @@ echo $this->Html->css('quilljs/css/quill.snow.css');
 			  			<li><a target="_Blank" href="http://www.linkedin.com"><i class="fa fa-linkedin" aria-hidden="true"></i></a></li>
 			  			<li><a target="_Blank" href="http://www.youtube.com"><i class="fa fa-youtube" aria-hidden="true"></i></a></li>
 					</ul>
-					<div class="phone">Call Now +1 123 456 789</div>
+<!--					<div class="phone">Call Now +1 123 456 789</div>-->
 				</div>
 			</div>
 			<div class="content-header">
@@ -93,24 +93,7 @@ echo $this->Html->css('quilljs/css/quill.snow.css');
 									<li><a href="update_a_campaign.html">Update a campaign</a></li>
 								</ul> -->
 							</li>
-								<li>
-                                                               
-									
-									<!-- <ul class="sub-menu">
-										<li><a href="index.html">Home v1</a></li>
-										<li><a href="index_2.html">Home v2</a></li>
-										<li><a href="index_3.html">Home v3</a></li>
-										<li><a href="index_gradient.html">Home Gradient</a></li>
-									</ul> -->
-								</li>
-								<!-- <li>
-									<a href="#">Explore<i class="fa fa-caret-down" aria-hidden="true"></i></a>
-									<ul class="sub-menu">
-										<li><a href="explore_layout_one.html">Explore Layout One</a></li>
-										<li><a href="explore_layout_two.html">Explore Layout Two</a></li>
-										<li><a href="explore_layout_three.html">Explore Layout Three</a></li>
-									</ul>
-								</li> -->
+								
 								<li>
                                                                   <?php echo  $this->Html->link(
     'Events',
@@ -133,74 +116,52 @@ echo $this->Html->css('quilljs/css/quill.snow.css');
 										<li><a href="update_a_campaign.html">Update a campaign</a></li>
 									</ul> -->
 								</li>
-							<li>
+							
 <li>   <?php echo  $this->Html->link(
     'About us',
-    ['controller' => 'pages', 'action' => 'about', '_full' => true]
-); ?></li>								<!-- <ul class="sub-menu">
-									<li><a href="coming_soon.html">Coming Soon</a></li>
-									<li><a href="about_us.html">About Us</a></li>
-									<li><a href="404.html">404</a></li>
-									<li><a href="login.html">Login</a></li>
-									<li><a href="register.html">Register</a></li>
-									<li><a href="faq.html">Faq</a></li>
-									<li><a href="event_details.html">Campaign details</a></li>
-								</ul> -->
-							</li>
-								<li>
-									<a href="blog.html">Blog</a>
-									<!-- <ul class="sub-menu">
-										<li><a href="blog_grid.html">Blog Grid</a></li>
-										<li><a href="blog_list.html">Blog List</a></li>
-										<li><a href="blog_list_sidebar.html">Blog Grid Sidebar</a></li>
-										<li><a href="blog_details.html">Blog Details</a></li>
-									</ul> -->
-								</li>
-								<!-- <li>
-									<a href="#">Shop<i class="fa fa-caret-down" aria-hidden="true"></i></a>
-									<ul class="sub-menu">
-										<li><a href="shop-grid.html">Shop Grid</a></li>
-										<li><a href="event_details.html">Shop Details</a></li>
-										<li><a href="cart.html">Cart</a></li>
-										<li><a href="checkout.html">Checkout</a></li>
-									</ul>
-								</li> -->
+    ['controller' => 'Pages', 'action' => 'about', '_full' => true]
+); ?></li>		
+								
+								
 								<li>   <?php echo  $this->Html->link(
     'Contact',
-    ['controller' => 'pages', 'action' => 'contact', '_full' => true]
+    ['controller' => 'Pages', 'action' => 'contact', '_full' => true]
 ); ?></li>
-								<!-- <li>
-									<a href="#">Account<i class="fa fa-caret-down" aria-hidden="true"></i></a>
-									<ul class="sub-menu">
-										<li><a href="dashboard.html">Dashboard</a></li>
-										<li><a href="profile.html">Profile</a></li>
-										<li><a href="account_my_campaigns.html">My Campaigns</a></li>
-										<li><a href="account_pledges_received.html">Pledges Received</a></li>
-										<li><a href="account_backed_campaigns.html">Backed Campaigns</a></li>
-										<li><a href="account_rewards.html">Rewards</a></li>
-										<li><a href="account_payments.html">Payments</a></li>
-									</ul>
-								</li> -->
-								<li><a href="faq.html">Faq</a></li>
+								
+								<li>   <?php echo  $this->Html->link(
+    'Faq',
+    ['controller' => 'Pages', 'action' => 'faq', '_full' => true]
+); ?></li>
+                                                                <li><a href="#" data-toggle="modal" data-target="#myModal">Request Celebrity</a></li>
 							</ul>
 						</nav><!-- .main-menu -->
-						<div class="search-icon">
+<!--						<div class="search-icon">
 							<a href="#" class="ion-ios-search-strong"></a>
 							<div class="form-search"></div>
 							<form action="#" method="POST" id="searchForm">
 						  		<input type="text" value="" name="search" placeholder="Search..." />
 						    	<button type="submit" value=""><span class="ion-ios-search-strong"></span></button>
 						  	</form>
-						</div>	
-
-						<div class="login login-button">
+						</div>	-->
+                                                <div class="login login-button dropdown">
+						
+                                                   
                                                     <?php
 
 if(!empty($AuthUser)) {  
-   // pr($AuthUser);exit;
-   // user is logged in, show logout..user menu etc
-    echo $this->Html->link('Logout', array('controller' => 'users', 'action' => 'logout')); 
-} else {
+    ?>
+                                                    
+       <div class="dropdown-toggle" data-toggle="dropdown">
+	
+           <a href="#">Settings</a></div> 
+        <ul class="dropdown-menu">
+      <li class="acc-drop"><a href="<?php echo $this->Url->build('/users/logout', true); ?>">Logout</a></li>
+      <li class="acc-drop"><a href="<?php echo $this->Url->build('/users/index', true); ?>">Myaccount</a></li>
+      
+    </ul> </div>                                            
+                                                    
+<?php       }                                         
+    else {
     echo $this->Html->link('Login', array('controller' => 'users', 'action' => 'login')); 
     
    // the user is not logged in
@@ -212,3 +173,25 @@ if(!empty($AuthUser)) {
 				</div><!-- .container -->
 			</div>
 		</header><!-- .site-header -->
+               
+                <div id="myModal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+        <h4>Request For New Celebrity</h4>
+       <form method="post" action="<?php echo $this->Url->build('/celebrities/cel_request', true); ?>">
+      <div class="modal-body">
+          <label>Enter Your Phone no</label><br/>
+          <input type="text" name="phone_no" value="" class="form-control" required=""/>
+          <label>Enter Celebrity wikipedia Link</label><br/>
+          <input type="text" name="celebrity_link" value="" class="form-control" required=""/>
+      </div>
+      <div class="modal-footer">
+          <input type="submit" class="btn btn-default" name="save" value="Submit"/>
+      </div>
+           </form>
+    </div>
+
+  </div>
+                </div>

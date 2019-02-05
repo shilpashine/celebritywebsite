@@ -33,15 +33,15 @@ class UsersController extends AppController {
 //            
             $user = $this->Auth->User();
 	    if(!empty($user)){
-		  if($user['user_type']!=4){
+		  if($user['user_type']!=1){
 			return $this->redirect($this->Auth->logout());
 	        }
 		  else{
-		   $this->Auth->allow(['login','logout','editProfile','index','viewData','addData','editData','listStaff','addStaffData','viewStaffData','ajaxStaffEditData','editStaffData','listCustomer','listDesigner','listSupplier','listFranchise','addCustomerData','viewCustomerData','ajaxCustomerEditData','editCustomerData','addDesignerData','viewDesignerData','ajaxDesignerEditData','editDesignerData','addSupplierData','viewSupplierData','ajaxSupplierEditData','editSupplierData','addFranchiseData','viewFranchiseData','ajaxFranchiseEditData','editFranchiseData']);
+		   $this->Auth->allow(['login','logout','editProfile','index','','addData','editData','listStaff','addStaffData','viewStaffData','ajaxStaffEditData','editStaffData','listCustomer','listDesigner','listSupplier','listFranchise','addCustomerData','viewCustomerData','ajaxCustomerEditData','editCustomerData','addDesignerData','viewDesignerData','ajaxDesignerEditData','editDesignerData','addSupplierData','viewSupplierData','ajaxSupplierEditData','editSupplierData','addFranchiseData','viewFranchiseData','ajaxFranchiseEditData','editFranchiseData','currentBooking']);
 		    }
 	    }
 		else{
-		  $this->Auth->allow(['login','logout','editProfile','listUser','viewData','addData','editData','listStaff','addStaffData','viewStaffData','ajaxStaffEditData','editStaffData','listCustomer','listDesigner','listSupplier','listFranchise','addCustomerData','viewCustomerData','ajaxCustomerEditData','editCustomerData','addDesignerData','viewDesignerData','ajaxDesignerEditData','editDesignerData','addSupplierData','viewSupplierData','ajaxSupplierEditData','editSupplierData','addFranchiseData','viewFranchiseData','ajaxFranchiseEditData','editFranchiseData']);
+		  $this->Auth->allow(['login','logout','editProfile','register']);
 		}
             
         
@@ -61,28 +61,30 @@ class UsersController extends AppController {
     } 
     public function login() {
         if ($this->request->is('post')) {
+           
             $user = $this->Auth->identify();
             if ($user) {
+               // pr($user);exit;
                 $this->Auth->setUser($user);
-               //pr($user);exit;
-           //   return $this->redirect($this->Auth->redirectUrl());
-                if(!empty($this->request->session()->read('visitor.newpage'))){
-                     
-                $lastid=$this->request->session()->read('visitor.lastid');
-		$this->redirect(array("controller"=>"event-details","action"=>"event_detail",$lastid));	
-                                   }
-              // if($user['user_type']==4 && $user['is_deleted']==0  && $user['active']==1){
+             if(!empty($this->request->session()->read('eventdetail.current_event_detail_id'))){
+               
+                $lastid11=$this->request->session()->read('eventdetail.current_event_detail_id');
+		$this->redirect(array("controller"=>"event-details","action"=>"event_detail",$lastid11));	
+                  }else{
+                      
+                  
+              if($user['user_type']==1 && $user['is_deleted']==0  && $user['active']==1){
 		$this->redirect(array("controller"=>"users","action"=>"index"));
-//               }
-//               else{
-//           return $this->redirect($this->Auth->logout());   
-//               }
+             
+               
                  }else{
             
             $this->Flash->error(__('Invalid username or password, try again'));
         }
         }
-    }
+            }
+            
+        }     }
  /*public function admin_login() {
         if ($this->request->is('post')) {
             $user = $this->Auth->identify();
@@ -100,6 +102,14 @@ class UsersController extends AppController {
           $lname=$this->request->data['lname'];
            $location=$this->request->data['location'];
             $locality=$this->request->data['locality'];
+            
+             $country=$this->request->data['country'];
+             $username=$this->request->data['username'];
+             $email=$this->request->data['email'];
+             $phone=$this->request->data['phone'];
+             $postal_code=$this->request->data['postal_code'];
+             $username=$this->request->data['username'];
+                
              $user_id=$this->request->data['user_id'];
                 $usersTable = TableRegistry::get('Users');
                 $id=$user_id;
@@ -111,8 +121,12 @@ class UsersController extends AppController {
 			$user->lname=$lname;
 			$user->address=$location;
                         $user->city=$locality;
+                         $user->country=$country;
+			$user->email=$email;
+                        $user->phone_number=$phone;
+                         $user->postal_code=$postal_code;
+                         $user->username=$username;
                         
-			
                         if($this->Users->save($user))
 				{
 				  echo 1;exit;	
@@ -189,21 +203,34 @@ class UsersController extends AppController {
 
 			$user->fname=$this->request->data["fname"];
 			$user->lname=$this->request->data["lname"];
+                        
+                        if(!empty($this->request->data["email"])){
 			$user->email=$this->request->data["email"];
-                        $user->username=$this->request->data["email"];
-
+                        
+                        }
+                        
+                        $user->phone_number=$this->request->data["phno"];
+                        
+                        $user->username=$this->request->data["phno"];
+                        $user->address=$this->request->data["address"];
+                        $user->country=$this->request->data["country"];
+                         $user->city=$this->request->data["city"];
+                          $user->postal_code=$this->request->data["zip"];
+                         
+                        
+                        
                         $user->password=$this->request->data["password"];
                         $user->pswd_token=$this->request->data["password"];
                         
                        
-			$user->user_type=4;
+			$user->user_type=1;
 			$user->modified=date("Y-m-d");
 			
                       
                         
 			if($this->Users->save($user))
 				{
-				    $this->Flash->set('The data has been successfully updated.');
+				    $this->Flash->set('The data has been successfully Saved.');
 					$this->redirect(array("controller"=>"users","action"=>"login"));	
 				}
 				
@@ -239,7 +266,7 @@ class UsersController extends AppController {
         $userdata1=$this->Auth->User();	
       //  pr($userdata);
         if(!empty($userdata1)){
-            echo 'tfghfgh';
+        
              $id1=$userdata1['id'];
         $datas=$this->Users->find('all', array(
          'recursive' => -1,
@@ -257,10 +284,47 @@ class UsersController extends AppController {
                 
                  $data_all=$this->EventOrders->find('all', array(
          'recursive' => -1,
-		'contain'=>array('EventTicketCodeDetails'=>['EventTicketDetails']),
+		'contain'=>array('EventDetails'=>array('EventPhotos','EventCategories'=>['Categories']),'EventTicketCodeDetails'=>['EventTicketDetails']),
 	    'conditions'=>array(
 		'EventOrders.isdeleted' =>0,
-                'EventOrders.user_id' =>$id1
+                'EventOrders.user_id' =>$id1,
+			 'EventOrders.status' =>1	
+                ),
+                'order' => array(
+                'EventOrders.id' => 'DESC'
+                )
+        ));
+		$data_all = $data_all->toArray();
+//       / pr($data_all);exit;
+                if(!empty($data_all)){
+		$this->set('data_all',json_encode($data_all));
+             // echo 'hhhhh';
+		}
+          
+    } else{
+            
+		$this->redirect(array("controller"=>"users","action"=>"login"));
+		}
+        }
+        
+        
+        public function currentBooking() {
+        $userdata1=$this->Auth->User();	
+      //  pr($userdata);
+        $date=date('Y-m-d');
+        if(!empty($userdata1)){
+        
+             $id1=$userdata1['id'];
+        
+                
+                 $data_all=$this->EventOrders->find('all', array(
+         'recursive' => -1,
+		'contain'=>array('EventDetails'=>array('EventPhotos','EventCategories'=>['Categories']),'EventTicketCodeDetails'=>['EventTicketDetails']),
+	    'conditions'=>array(
+		'EventOrders.isdeleted' =>0,
+                'EventOrders.user_id' =>$id1,
+                'EventOrders.status' =>1,
+                 'EventOrders.event_date >' =>$date
 				
                 ),
                 'order' => array(
@@ -268,17 +332,54 @@ class UsersController extends AppController {
                 )
         ));
 		$data_all = $data_all->toArray();
-        // pr($data_all);exit;
+//       / pr($data_all);exit;
                 if(!empty($data_all)){
 		$this->set('data_all',json_encode($data_all));
              // echo 'hhhhh';
 		}
           
     } else{
-            echo "logout";exit;
+            
 		$this->redirect(array("controller"=>"users","action"=>"login"));
 		}
         }
+        
+          public function bookingHistory() {
+        $userdata1=$this->Auth->User();	
+      //  pr($userdata);
+        $date=date('Y-m-d');
+        if(!empty($userdata1)){
+        
+             $id1=$userdata1['id'];
+        
+                
+                 $data_all=$this->EventOrders->find('all', array(
+         'recursive' => -1,
+		'contain'=>array('EventDetails'=>array('EventPhotos','EventCategories'=>['Categories']),'EventTicketCodeDetails'=>['EventTicketDetails']),
+	    'conditions'=>array(
+		'EventOrders.isdeleted' =>0,
+                'EventOrders.user_id' =>$id1,
+                'EventOrders.status' =>1,
+                 'EventOrders.event_date <' =>$date
+				
+                ),
+                'order' => array(
+                'EventOrders.id' => 'DESC'
+                )
+        ));
+		$data_all = $data_all->toArray();
+//       / pr($data_all);exit;
+                if(!empty($data_all)){
+		$this->set('data_all',json_encode($data_all));
+             // echo 'hhhhh';
+		}
+          
+    } else{
+            
+		$this->redirect(array("controller"=>"users","action"=>"login"));
+		}
+        }
+        
     public function editPassword(){
         
          $userdata=$this->Auth->User();	

@@ -8,6 +8,7 @@ class UsersController extends AppController {
 	public function beforeFilter(Event $event)
     {
 		parent::beforeFilter($event);
+                
 	    $user = $this->Auth->User();
 	    if(!empty($user)){
 		  if($user['user_type']!=4){

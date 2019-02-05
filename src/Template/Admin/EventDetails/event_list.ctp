@@ -12,9 +12,11 @@
                                                 <button type="button" class="btn green" onclick="cancel_policy()">ADD NEW</button>
                                                 <?php echo $this->Flash->render('flash'); ?>
                                                 
+                                             
                                             </div>
+                                             <a href="<?php echo $this->Url->build('/admin/eventDetails/event_alllist', true); ?>" class="btn green" >Event List</a>
+                        
                                         </div>
-                                  
                                   
                                 </div>
                       
@@ -360,7 +362,7 @@
                                                     <th class="all"> Event Title</th>
                                                     <th class="min-phone-l">Description</th>
                                                     <th class="min-tablet">Location</th>
-                                                    <th class="desktop">Country</th>
+                                                    <th class="none">Country</th>
                                                     <th class="none">Start Date</th>
                                                     <th class="none">End Date</th>
                                                      <th class="none">Amount</th>
@@ -412,6 +414,20 @@
                                                    <?php  } ?>
                                                       <a href="viewDetails/<?php echo $celebrity_val->id;?> ">
                                                             <i class="fa fa-eye"></i> View Details </a>
+                                                            <br/>
+                                                            <a href="eventComment/<?php echo $celebrity_val->id;?> ">
+                                                            <i class="fa fa-envelope"></i> View Comment </a>
+                                                              <a href="faqComment/<?php echo $celebrity_val->id;?> ">
+                                                            <i class="fa fa-envelope"></i> View Faq </a><br/>
+                                                            <?php if($celebrity_val->is_slider==1){ ?>
+                                                            <a href="change_slider/<?php echo $celebrity_val->id;?> ">
+                                                            <i class="fas fa-sliders-h" style="color:green"></i> Active Slider </a>
+                                                            <?php }else{ ?>
+                                                             <a href="change_slider/<?php echo $celebrity_val->id;?> ">
+                                                            <i class="fas fa-sliders-h"  style="color:red"></i> InActive Slider </a>
+                                                       
+                                                         
+                                                   <?php  } ?>
                                                   
                                                  </td>
                                                 </tr>
@@ -610,6 +626,18 @@
                     
 		
 	  }	
+          
+            function video_url_edit(){
+                  var div_url_count=$("#div_ticket_url_count").val();
+                  var div_new_count=parseInt(div_url_count)+1;
+                  $("#div_ticket_url_count").val(div_new_count);
+                   $("#url_ticket").append('<div id="id_url'+div_new_count+'">   <label> ADD Ticket Type </label><input type="text" class="form-control" name="ticket_name1[]" id="form_control_1"  placeholder=" Enter Ticket Name"><input type="text" class="form-control" name="ticket_color1[]" id="form_control_1"  value="" placeholder=" Enter Ticket Color"><input type="text" class="form-control" name="ticket_desc1[]" id="form_control_1"  placeholder=" Enter Ticket Description"><input type="text" class="form-control" name="ticket_qty1[]" id="form_control_1"  placeholder=" Enter Ticket Qty"> <input type="text" class="form-control" name="ticket_price1[]" id="form_control_1"  placeholder=" Enter Ticket Price"> <input type="button" class="btn green" name="submit" value="Delete" onclick="delete_url11('+div_new_count+')"/> </div>')
+                    
+                    
+		
+	  }	
+          
+          
             function edit_data(user_id){
                  // alert(user_id);
                     $.ajax({
@@ -677,14 +705,17 @@
              function delete_url_ticket(el){
               var x = confirm("Are you sure you want to delete?");
                 if (x){
-                 //   alert('hii')
+                    var div_url_count=$("#div_url_count11").val();
+                    var new_data=parseInt(div_url_count)-1;
+                //    alert(new_data);
               $.ajax({
 				type: "POST",
 				evalScripts: true,
 				url: '<?php echo $this->Url->build('/admin/eventDetails/delete_ticket', true);  ?>',
 				data: ({id:el}),
 				success: function (data){
-                                  //  alert(data);
+                                  alert(data);
+                                $("#div_url_count11").val(new_data);
                                    
                                       $("#ticket_url"+el).remove();
                               

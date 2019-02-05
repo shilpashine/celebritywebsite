@@ -13,6 +13,8 @@
                                                 <?php echo $this->Flash->render('flash'); ?>
                                                 
                                             </div>
+                                              <a href="<?php echo $this->Url->build('/admin/celebrities/list_allcelebrity', true); ?>" class="btn green" >Celebrity List</a>
+                        
                                         </div>
                                   
                                   
@@ -72,12 +74,12 @@
                                                     
                                                 </div>
                                                 <div class="form-group form-md-line-input">
-                                                    <textarea class="form-control" id="form_control_1" name="home_address" required=""> Enter Home Location</textarea>
-                                                    
+                                                    <textarea class="form-control" id="form_control_1" name="home_address" required=""> </textarea>
+                                                      <label for="form_control_1"> Enter Home City</label>
                                                 </div>
                                                  <div class="form-group form-md-line-input">
-                                                    <textarea class="form-control" id="form_control_1" name="curr_address" required=""> Enter Current Location</textarea>
-                                                    
+                                                    <textarea class="form-control" id="form_control_1" name="curr_address" required=""> </textarea>
+                                                      <label for="form_control_1"> Enter Current City</label>
                                                 </div>
                                                  <div class="form-group">
                                                     <label class="control-label col-md-4">Select Category
@@ -155,14 +157,14 @@
                                                    
                                                     <th class="all"> Name</th>
                                                     <th class="min-phone-l">Best_at</th>
-                                                    <th class="min-tablet">Gender</th>
-                                                    <th class="desktop">Dob</th>
+                                                    <th class="none">Gender</th>
+                                                    <th class="none">Dob</th>
                                                     <th class="desktop">Category Name</th>
                                                     <th class="none">Home location</th>
                                                     <th class="none">Current location</th>
                                                      <th class="none">Description</th>
                                                    
-                                                   
+                                                    <th class="none">Total No Follower</th>
                                                   
                                                     <th class="desktop">Action</th>
                                                   
@@ -174,6 +176,12 @@
 												if(isset($celebrity_datas)){
 												$celebrity_datas=json_decode($celebrity_datas);
 												foreach($celebrity_datas as $celebrity_val){
+                                                                                                    $total=0;
+                                                                                                    
+                                                                                              //    pr($celebrity_val);exit;
+                                                                                                    if(!empty($celebrity_val->event_follows)){
+                                                                                                        $total=$total+count($celebrity_val->event_follows);
+                                                                                                    }
 													//pr($celebrity_val);exit;
 												$dob=explode('T',$celebrity_val->dob);
 												?>
@@ -187,7 +195,7 @@
                                                     <td><?php echo $celebrity_val->home_location;?></td>
                                                     <td><?php echo $celebrity_val->current_location;?></td>
                                                     <td><?php echo $celebrity_val->description;?></td>
-                                                   
+                                                      <td><?php echo $total;?></td>
                                                 
                                                 <td>
                                                        <a title="View" onclick="edit_data(<?php echo $celebrity_val->id;?>)" href="#">

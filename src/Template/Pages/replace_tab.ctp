@@ -38,7 +38,7 @@ $this->layout = 'default';
 										<div class="col-md-8 pls-col">
 												<div>
 														<div class="project-love-item clearfix">
-															<a class="project-love-image" href="event_details.html"> <?php if(!empty($val->event_detail->event_photos[0]->image)){ echo $this->Html->image("medium/".$val->event_detail->event_photos[0]->image, ['alt' => 'event']); }?>
+															<a class="project-love-image" href="#"> <?php if(!empty($val->event_detail->event_photos[0]->image)){ echo $this->Html->image("medium/".$val->event_detail->event_photos[0]->image, ['alt' => 'event']); }?>
 </a>
 															<div class="project-love-item-content project-love-box">
                                                                                                                                 <a href="#" class="category"><?php if(!empty($category_datas->category_name)){ echo $category_datas->category_name; }?></a>
@@ -57,11 +57,27 @@ $this->layout = 'default';
                                                                                                                                     <?php }} ?>
                                                                                                                                         <div class="author-address"><span class="ion-location"></span><?php if(!empty( $val->event_detail->event_location)) { echo $val->event_detail->event_location ; }?></div>
 																</div>
+                                                                                                                                
+                                                                                                                                <?php     $amount11=0;  if(!empty($val->event_detail->event_orders)){ foreach($val->event_detail->event_orders as $val_amount){
+                                                                                                  if(!empty($val_amount->total_price)){
+            
+                                                                                                  $amount11=$amount11+$val_amount->product_price;
+                                                                                                      
+                                                                                                      
+                                                                                                      
+                                                                                                  }
+                                                                                                  }
+                                                                                                  }?>
 																<div class="process">
-																	<div class="raised"><span></span></div>
+																	 <div class="progress">
+  <div class="progress-bar progress-bar-primary progress-bar-striped" role="progressbar"
+  aria-valuenow="70" aria-valuemin="0" aria-valuemax="100" style="width:<?php if(!empty( $val->event_detail->event_amount)&& !empty( $val->event_detail->target_amount) ) {  $new_amount=($amount11/$val->event_detail->event_amount)*100 ; echo round($new_amount);}?>%">
+   
+  </div>
+</div>                
 																	<div class="process-info">
 																		<div class="process-pledged"><span><i class="fa fa-inr" aria-hidden="true"></i> <?php if(!empty( $val->event_detail->event_amount)) { echo $val->event_detail->event_amount ; }?></span>pledged</div>
-																		<div class="process-funded"><span><?php if(!empty( $val->event_detail->event_amount)&& !empty( $val->event_detail->target_amount) ) {  $new_amount=($val->event_detail->target_amount/$val->event_detail->event_amount)*100 ; echo round($new_amount);}?>%</span>funded</div>
+																		<div class="process-funded"><span><?php if(!empty( $val->event_detail->event_amount)&& !empty( $val->event_detail->target_amount) ) {  $new_amount=($amount11/$val->event_detail->event_amount)*100 ; echo round($new_amount);}?>%</span>funded</div>
 																		<div class="process-time"><span>37</span>backers</div>
                                                                                                                                                 <?php if(!empty($val->event_detail->approx_start_date)){
                                                                                                                                                  $curr_date=date_create(date("Y-m-d"));

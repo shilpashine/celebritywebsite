@@ -116,7 +116,14 @@
            echo $this->Html->script("jssor.slider-27.5.0.min.js");
            echo $this->Html->script("main.js");
              
-          ?>
+          ?><script type="text/javascript" src="https://cdn.jsdelivr.net/jquery.jssocials/1.4.0/jssocials.min.js"></script>
+
+          <script>
+        $("#share").jsSocials({
+            shares: ["email", "twitter", "facebook", "googleplus"]
+        });
+    </script>
+
         	<script type="text/javascript">jssor_1_slider_init();</script>
 
     <script>
